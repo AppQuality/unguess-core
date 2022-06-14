@@ -28,10 +28,19 @@ I blocchi base ma non unici che costituiscono un servizio sono:
 ## Quests
 E' l'elemendo fondamentale del servizio, corrisponde all'attività che si vuole completare ed è formata da un elenco di blocchettini di tipo [Step](#step). 
 
-Prevede una serie di condizioni di accesso che determinano la partecipazione del tester e l'impatto sul costo del servizio.
+Prevede una serie di condizioni di accesso che determinano la partecipazione del tester e l'impatto sul costo del servizio e un numero atteso di output obiettivo (esempio: numero di tester con completamento della missione).
 
 ### Condizioni di accesso alla quest
+Consiste in un elenco di condizioni che devono essere soddisfatte per poter prendere parte alla quest. In questo modo il tester che soddisfa questi requisiti può in autonomia decidere se svolgere o meno la quest. Tutte le ulteriori logiche di ingaggio sono gestite direttamente dalla piattaforma dei tester che potrà estendere queste condizioni.
 
+#### ESEMPIO: QUEST RAPIDA
+La piattaforma dei tester potrò decidere di auto-eliminare la partecipazione di un tester se non viene completata entro un certo tempo. In questo modo verrà liberato un posto che potrà essere occupato da un altro tester con le medesime caratteristiche. Il tutto senza influenzare la piattaforma customer o quella core.
+
+Le regole di accesso inizialmente disponibili saranno:
+- TimedAccessCondition: La quest è accessibile solo per un determinato periodo di tempo.
+- TesterListAccessCondition: La quest è accessibile solo per una lista di tester specifica.
+- TesterDeviceAccessCondition: La quest è accessibile solo per un certo tipo di dispositivo.
+- TesterLimitAccessCondition: La quest è accessibile solo per un certo numero di tester.
 
 ### Step
 Il blocco di tipo [Step](#step) è una singola attività da svolgere con uno specifico output. Inizialmente sono previste tre tipologie di step:
