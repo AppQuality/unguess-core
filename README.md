@@ -33,8 +33,10 @@ Prevede una serie di condizioni di accesso che determinano la partecipazione del
 ### Condizioni di accesso alla quest
 Consiste in un elenco di condizioni che devono essere soddisfatte per poter prendere parte alla quest. In questo modo il tester che soddisfa questi requisiti può in autonomia decidere se svolgere o meno la quest. Tutte le ulteriori logiche di ingaggio sono gestite direttamente dalla piattaforma dei tester che potrà estendere queste condizioni.
 
-#### ESEMPIO: QUEST RAPIDA
-La piattaforma dei tester potrò decidere di auto-eliminare la partecipazione di un tester se non viene completata entro un certo tempo. In questo modo verrà liberato un posto che potrà essere occupato da un altro tester con le medesime caratteristiche. Il tutto senza influenzare la piattaforma customer o quella core.
+> ESEMPIO: QUEST RAPIDA
+> 
+> La piattaforma dei tester potrò decidere di auto-eliminare la partecipazione di un tester se non viene completata entro un certo tempo. In questo modo verrà liberato un posto che potrà essere occupato da un altro tester con le medesime caratteristiche. Il tutto senza influenzare la piattaforma customer o quella core.
+
 
 Le regole di accesso inizialmente disponibili saranno:
 - TimedAccessCondition: La quest è accessibile solo per un determinato periodo di tempo.
