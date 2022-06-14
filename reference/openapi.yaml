@@ -21,6 +21,12 @@ paths:
       tags: []
       responses: {}
       operationId: get-quests
+  /services:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: get-services
 components:
   schemas:
     Service:
