@@ -3,9 +3,163 @@ x-stoplight:
   id: b8clt14el6lki
 info:
   title: openapi
+  description: Unguess core api
+  contact:
+    email: it@unguess.io
+    name: Unguess
+    url: 'https://unguess.io'
   version: '1.0'
+  license:
+    name: license
+    url: 'https://unguess.io'
 servers:
   - url: 'http://localhost:3000'
 paths:
+  /quests:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: get-quests
 components:
-  schemas: {}
+  schemas:
+    Service:
+      title: Service
+      x-stoplight:
+        id: 2kt1wrskd9srq
+      type: object
+      properties:
+        id:
+          type: string
+    Quest:
+      title: Quest
+      x-stoplight:
+        id: 3nebbmk50z3k6
+      type: object
+      properties:
+        id:
+          type: string
+        steps:
+          oneOf:
+            - $ref: '#/components/schemas/Step'
+            - type: array
+              items:
+                $ref: '#/components/schemas/Step'
+        access:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessCondition'
+    Step:
+      title: Step
+      x-stoplight:
+        id: civvi8fyr15z4
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+            description:
+              type: string
+        - oneOf:
+            - $ref: '#/components/schemas/BugFormStep'
+            - $ref: '#/components/schemas/MediaStep'
+            - $ref: '#/components/schemas/BugFormStep'
+    AccessCondition:
+      title: AccessCondition
+      x-stoplight:
+        id: h3tbhx96brqgb
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+        - oneOf:
+            - $ref: '#/components/schemas/TimedAccessCondition'
+            - $ref: '#/components/schemas/TesterListAccessCondition'
+            - $ref: '#/components/schemas/TesterLimitAccessCondition'
+    BugFormStep:
+      title: BugFormStep
+      x-stoplight:
+        id: 8sgo1eehf94o0
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - bug
+    SurveyStep:
+      title: SurveyStep
+      x-stoplight:
+        id: n21983o003erp
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - survey
+    MediaStep:
+      title: MediaStep
+      x-stoplight:
+        id: 8094si4w0nj6e
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - media
+    TimedAccessCondition:
+      title: TimedAccessCondition
+      x-stoplight:
+        id: mdxonzt66170m
+      type: object
+      properties:
+        startDate:
+          type: string
+        endDate:
+          type: string
+        closeDate:
+          type: string
+        type:
+          type: string
+          enum:
+            - timed
+    TesterListAccessCondition:
+      title: TesterListAccessCondition
+      x-stoplight:
+        id: rh1ncxf5whe5y
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: integer
+        type:
+          type: string
+          enum:
+            - testerlist
+    TesterLimitAccessCondition:
+      title: TesterLimitAccessCondition
+      x-stoplight:
+        id: i7cnb62aujjvk
+      type: object
+      properties:
+        limit:
+          type: number
+        type:
+          type: string
+          enum:
+            - testerlimit
+    TesterDeviceAccessCondition:
+      title: TesterDeviceAccessCondition
+      x-stoplight:
+        id: g7vye1s521ng0
+      type: object
+      properties:
+        operatingSystem:
+          type: string
+        deviceType:
+          type: string
+        type:
+          type: string
+          enum:
+            - testerdevice
