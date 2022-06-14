@@ -83,6 +83,7 @@ components:
             - $ref: '#/components/schemas/TimedAccessCondition'
             - $ref: '#/components/schemas/TesterListAccessCondition'
             - $ref: '#/components/schemas/TesterLimitAccessCondition'
+            - $ref: '#/components/schemas/TesterDeviceAccessCondition'
     BugFormStep:
       title: BugFormStep
       x-stoplight:
