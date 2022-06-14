@@ -2,7 +2,7 @@ openapi: 3.1.0
 x-stoplight:
   id: b8clt14el6lki
 info:
-  title: openapi
+  title: UNGUESS CORE
   description: Unguess core api
   contact:
     email: it@unguess.io
