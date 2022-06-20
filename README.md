@@ -45,14 +45,21 @@ Le regole di accesso inizialmente disponibili saranno:
 - TesterLimitAccessCondition: La quest è accessibile solo per un certo numero di tester.
 
 ### Step
-Il blocco di tipo [Step](#step) è una singola attività da svolgere con uno specifico output. Inizialmente sono previste tre tipologie di step:
+Il blocco di tipo [Step](#step) è una singola attività da svolgere con uno specifico output. Ogni step ha come compito quello di richiedere lo svolgimento di una determinata attività e contribuirà ad aumentare il valore di costo e tempo della quest a cui appartiene. 
+Inizialmente sono previste tre tipologie di step:
 - BugForm Step
 - Survey Step
 - Media Step
 
 
 ## Costs
-TBD
+Lista di blocchi di costo che determina come verranno determinati i costi del servizio. Inizialmente verranno predisposti due possibili blocchettini e poi estesi in base all'utilizzo.
+
+### Quest Cost
+Questo blocchettino si occuperà di calcolare il costo del servizio in base al numero di quest e alla configurazione dei singoli step. Per cui un servizio dello stesso tipo ma con un numero superiore di step o condizioni di accesso particolari avrà un contributo di costo differente.
+
+### Manual Costo
+Blocchettino libero con il quale sarà possibile indicare una specifico costo, (...) TBD
 
 ## Price
 TBD
