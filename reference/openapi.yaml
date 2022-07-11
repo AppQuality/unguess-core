@@ -83,7 +83,9 @@ components:
             - $ref: '#/components/schemas/TimedAccessCondition'
             - $ref: '#/components/schemas/TesterListAccessCondition'
             - $ref: '#/components/schemas/TesterLimitAccessCondition'
-            - $ref: '#/components/schemas/TesterDeviceAccessCondition'
+            - $ref: '#/components/schemas/TesterDeviceOsVersionAccessCondition'
+            - $ref: '#/components/schemas/TesterDeviceTypeAccessCondition'
+            - $ref: '#/components/schemas/TesterDeviceOsAccessCondition'
     BugFormStep:
       title: BugFormStep
       x-stoplight:
@@ -152,18 +154,6 @@ components:
           type: string
           enum:
             - testerlimit
-    TesterDeviceTypeAccessCondition:
-      title: TesterDeviceTypeAccessCondition
-      x-stoplight:
-        id: g7vye1s521ng0
-      type: object
-      properties:
-        deviceType:
-          type: string
-        type:
-          type: string
-          enum:
-            - testerdevice
     TesterDeviceOsAccessCondition:
       title: TesterDeviceOsAccessCondition
       x-stoplight:
@@ -175,7 +165,19 @@ components:
         type:
           type: string
           enum:
-            - testerdevice
+            - testerDeviceOs
+    TesterDeviceTypeAccessCondition:
+      title: TesterDeviceTypeAccessCondition
+      x-stoplight:
+        id: g7vye1s521ng0
+      type: object
+      properties:
+        deviceType:
+          type: string
+        type:
+          type: string
+          enum:
+            - testerDeviceType
     TesterDeviceOsVersionAccessCondition:
       title: TesterDeviceOsVersionAccessCondition
       x-stoplight:
@@ -187,4 +189,4 @@ components:
         type:
           type: string
           enum:
-            - testerdevice
+            - testerDeviceOsVersion
