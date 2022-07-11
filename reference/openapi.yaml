@@ -17,16 +17,129 @@ servers:
 paths:
   /quests:
     get:
-      summary: Your GET endpoint
+      summary: Get All Quests
       tags: []
       responses: {}
       operationId: get-quests
+      description: ''
+      security:
+        - Key: []
   /services:
     get:
-      summary: Your GET endpoint
+      summary: Get All Services
       tags: []
       responses: {}
       operationId: get-services
+      description: Get the services currently instantiated
+      security:
+        - Key: []
+    post:
+      summary: Instantiate a new service
+      operationId: post-services
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  quests:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                        - $ref: '#/components/schemas/Quest'
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                templateId:
+                  type: number
+      security:
+        - Key: []
+  '/services/{id}/quests':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get the quests of a service
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                      required:
+                        - id
+                    - $ref: '#/components/schemas/Quest'
+      operationId: get-services-id-quests
+    post:
+      summary: Create a new quest in a service
+      operationId: post-services-id-quests
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      id:
+                        type: string
+                  - $ref: '#/components/schemas/Quest'
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quest'
+  /serviceTemplates:
+    get:
+      summary: Get All Templates
+      tags: []
+      operationId: get-serviceTemplates
+      description: Get all Service templates
+      security:
+        - Key: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
 components:
   schemas:
     Service:
@@ -43,8 +156,6 @@ components:
         id: 3nebbmk50z3k6
       type: object
       properties:
-        id:
-          type: string
         steps:
           oneOf:
             - $ref: '#/components/schemas/Step'
@@ -190,3 +301,8 @@ components:
           type: string
           enum:
             - testerDeviceOsVersion
+  securitySchemes:
+    Key:
+      name: API Key
+      type: apiKey
+      in: header
