@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/AppQuality/unguess-core#readme",
   "devDependencies": {
+    "@swc/core": "^1.2.212",
     "@swc/jest": "^0.2.21",
     "@types/body-parser": "^1.19.2",
     "@types/cors": "^2.8.12",
