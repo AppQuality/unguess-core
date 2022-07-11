@@ -1,5 +1,5 @@
 import { Context } from "openapi-backend";
-import config from "../config";
+import config from "@src/config";
 
 export default async (
   c: Context,
