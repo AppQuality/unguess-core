@@ -1,2 +1,5 @@
+import Quests from "./mockedDb/quests";
 export {};
-beforeAll(async () => {});
+beforeAll(async () => {
+  Quests.mock();
+});

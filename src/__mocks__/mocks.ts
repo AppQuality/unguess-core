@@ -13,7 +13,6 @@ jest.mock("@src/middleware/keySecurityHandler", () => {
     if (!authHeader) {
       throw new Error("No token");
     }
-    console.log(authHeader);
     if (!["valid"].includes(authHeader)) {
       throw new Error("Invalid token");
     }
