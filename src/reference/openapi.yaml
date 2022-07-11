@@ -68,6 +68,9 @@ paths:
                   type: string
                 templateId:
                   type: number
+              required:
+                - name
+                - templateId
       security:
         - Key: []
   '/services/{id}/quests':
@@ -140,6 +143,9 @@ paths:
                       type: string
                     name:
                       type: string
+                  required:
+                    - id
+                    - name
 components:
   schemas:
     Service:
