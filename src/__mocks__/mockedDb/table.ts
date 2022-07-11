@@ -22,7 +22,11 @@ class Table<T> {
   async clear() {
     return await sqlite3.run(`DELETE FROM ${this.name}`);
   }
-  async all(params?: (keyof T)[], where?: (T | T[])[]): Promise<T[]> {
+  async all(
+    params?: (keyof T)[],
+    where?: (T | T[])[],
+    limit?: number
+  ): Promise<T[]> {
     const keys = params ? params.join(",") : "*";
     let WHERE = "";
     if (where) {
@@ -43,7 +47,15 @@ class Table<T> {
         )
         .join(" AND ")}`;
     }
-    return await sqlite3.all(`SELECT ${keys} FROM ${this.name} ${WHERE}`);
+    return await sqlite3.all(
+      `SELECT ${keys} FROM ${this.name} ${WHERE} ${
+        limit ? `LIMIT ${limit}` : ""
+      }`
+    );
+  }
+  async first(params?: (keyof T)[], where?: (T | T[])[]): Promise<T> {
+    const items = await this.all(params, where, 1);
+    return items[0];
   }
 }
 export default Table;
