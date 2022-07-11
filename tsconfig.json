@@ -1,0 +1,27 @@
+{
+  "ts-node": {
+    "files": true
+  },
+  "files": ["src/index.ts", "src/types.d.ts"],
+  "compilerOptions": {
+    "inlineSourceMap": true,
+    "noImplicitAny": true,
+    "target": "es5",
+    "outDir": "./dist",
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"]
+    }
+  },
+  "include": ["src"]
+}
