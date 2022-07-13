@@ -5,19 +5,46 @@
 
 export interface paths {
   "/quests": {
+    /** Get all the quest available, regardless of the access conditions */
     get: operations["get-quests"];
   };
   "/services": {
     /** Get the services currently instantiated */
     get: operations["get-services"];
+    /** Create a new service from a template */
     post: operations["post-services"];
   };
   "/services/{id}/quests": {
+    /** Get the quest of an instance of service */
     get: operations["get-services-id-quests"];
+    /** Add a new quest to the instance of a service */
     post: operations["post-services-id-quests"];
     parameters: {
       path: {
+        /** The id of the service */
         id: string;
+      };
+    };
+  };
+  "/quests/{questId}": {
+    /** Retrieve the quest details */
+    get: operations["get-quests-questId"];
+    parameters: {
+      path: {
+        /** The id of the quest */
+        questId: components["parameters"]["questId"];
+      };
+    };
+  };
+  "/steps/{stepId}": {
+    /** Retrieve details of the step and optional details */
+    get: operations["get-steps-stepId"];
+    /** Allow an user to link something (a video, a bug, a survey result...) to a quest */
+    post: operations["post-steps-stepId"];
+    parameters: {
+      path: {
+        /** The id of the step */
+        stepId: components["parameters"]["stepId"];
       };
     };
   };
@@ -29,97 +56,46 @@ export interface paths {
 
 export interface components {
   schemas: {
-    /** Service */
-    Service: {
-      id?: string;
-    };
     /** Quest */
     Quest: {
-      steps?: components["schemas"]["Step"] | components["schemas"]["Step"][];
-      access?: components["schemas"]["AccessCondition"][];
+      steps?:
+        | external["Steps/Steps.yaml"]["components"]["schemas"]["Step"]
+        | external["Steps/Steps.yaml"]["components"]["schemas"]["Step"][];
+      access?: external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["AccessCondition"][];
     };
-    /** Step */
-    Step: {
+    /** Author */
+    Author: {
       id?: string;
-      description?: string;
-    } & (
-      | components["schemas"]["BugFormStep"]
-      | components["schemas"]["MediaStep"]
-      | components["schemas"]["SurveyStep"]
-    );
-    /** AccessCondition */
-    AccessCondition: {
-      id?: string;
-    } & (
-      | components["schemas"]["TimedAccessCondition"]
-      | components["schemas"]["TesterListAccessCondition"]
-      | components["schemas"]["TesterLimitAccessCondition"]
-      | components["schemas"]["TesterDeviceOsVersionAccessCondition"]
-      | components["schemas"]["TesterDeviceTypeAccessCondition"]
-      | components["schemas"]["TesterDeviceOsAccessCondition"]
-    );
-    /** BugFormStep */
-    BugFormStep: {
       /** @enum {string} */
-      type?: "bug";
+      source?: "tryber";
     };
-    /** SurveyStep */
-    SurveyStep: {
-      /** @enum {string} */
-      type?: "survey";
-    };
-    /** MediaStep */
-    MediaStep: {
-      /** @enum {string} */
-      type?: "media";
-    };
-    /** TimedAccessCondition */
-    TimedAccessCondition: {
-      endDate?: string;
-      /** @enum {string} */
-      type?: "timed";
-    };
-    /** TesterListAccessCondition */
-    TesterListAccessCondition: {
-      list?: number[];
-      /** @enum {string} */
-      type?: "testerlist";
-    };
-    /** TesterLimitAccessCondition */
-    TesterLimitAccessCondition: {
-      limit?: number;
-      /** @enum {string} */
-      type?: "testerlimit";
-    };
-    /** TesterDeviceOsAccessCondition */
-    TesterDeviceOsAccessCondition: {
-      operatingSystem?: string;
-      /** @enum {string} */
-      type?: "testerDeviceOs";
-    };
-    /** TesterDeviceTypeAccessCondition */
-    TesterDeviceTypeAccessCondition: {
-      deviceType?: string;
-      /** @enum {string} */
-      type?: "testerDeviceType";
-    };
-    /** TesterDeviceOsVersionAccessCondition */
-    TesterDeviceOsVersionAccessCondition: {
-      operatingSystemVersion?: string;
-      /** @enum {string} */
-      type?: "testerDeviceOsVersion";
-    };
+  };
+  parameters: {
+    /** @description Expand results */
+    expand: "results";
+    /** @description The id of the step */
+    stepId: string;
+    /** @description The id of the quest */
+    questId: string;
   };
 }
 
 export interface operations {
+  /** Get all the quest available, regardless of the access conditions */
   "get-quests": {
-    responses: {};
+    responses: {
+      /** OK */
+      200: unknown;
+    };
   };
   /** Get the services currently instantiated */
   "get-services": {
-    responses: {};
+    responses: {
+      /** OK */
+      200: unknown;
+    };
   };
+  /** Create a new service from a template */
   "post-services": {
     responses: {
       /** OK */
@@ -138,15 +114,17 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": {
-          name?: string;
-          templateId?: number;
+          name: string;
+          templateId: number;
         };
       };
     };
   };
+  /** Get the quest of an instance of service */
   "get-services-id-quests": {
     parameters: {
       path: {
+        /** The id of the service */
         id: string;
       };
     };
@@ -161,9 +139,11 @@ export interface operations {
       };
     };
   };
+  /** Add a new quest to the instance of a service */
   "post-services-id-quests": {
     parameters: {
       path: {
+        /** The id of the service */
         id: string;
       };
     };
@@ -183,6 +163,82 @@ export interface operations {
       };
     };
   };
+  /** Retrieve the quest details */
+  "get-quests-questId": {
+    parameters: {
+      path: {
+        /** The id of the quest */
+        questId: components["parameters"]["questId"];
+      };
+      query: {
+        /** Expand results */
+        expand?: components["parameters"]["expand"];
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Quest"] & {
+            results?: string;
+          } & {
+            service?: number;
+          };
+        };
+      };
+    };
+  };
+  /** Retrieve details of the step and optional details */
+  "get-steps-stepId": {
+    parameters: {
+      path: {
+        /** The id of the step */
+        stepId: components["parameters"]["stepId"];
+      };
+      query: {
+        /** Expand results */
+        expand?: components["parameters"]["expand"];
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": external["Steps/Steps.yaml"]["components"]["schemas"]["Step"] & {
+            results?: string;
+          } & {
+            quest?: number;
+            service?: number;
+          };
+        };
+      };
+    };
+  };
+  /** Allow an user to link something (a video, a bug, a survey result...) to a quest */
+  "post-steps-stepId": {
+    parameters: {
+      path: {
+        /** The id of the step */
+        stepId: components["parameters"]["stepId"];
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          author?: components["schemas"]["Author"];
+          result: external["Results/Results.yaml"]["components"]["schemas"]["Result"];
+        };
+      };
+    };
+  };
   /** Get all Service templates */
   "get-serviceTemplates": {
     responses: {
@@ -190,8 +246,8 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            id?: string;
-            name?: string;
+            id: string;
+            name: string;
           }[];
         };
       };
@@ -199,4 +255,114 @@ export interface operations {
   };
 }
 
-export interface external {}
+export interface external {
+  "AccessConditions/AccessConditions.yaml": {
+    paths: {};
+    components: {
+      schemas: {
+        /** AccessCondition */
+        AccessCondition: {
+          id?: string;
+        } & (
+          | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TimedAccessCondition"]
+          | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterListAccessCondition"]
+          | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterLimitAccessCondition"]
+          | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterDeviceOsVersionAccessCondition"]
+          | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterDeviceTypeAccessCondition"]
+          | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterDeviceOsAccessCondition"]
+        );
+        /** TimedAccessCondition */
+        TimedAccessCondition: {
+          endDate?: string;
+          /** @enum {string} */
+          type?: "timed";
+        };
+        /** TesterListAccessCondition */
+        TesterListAccessCondition: {
+          list?: number[];
+          /** @enum {string} */
+          type?: "testerlist";
+        };
+        /** TesterLimitAccessCondition */
+        TesterLimitAccessCondition: {
+          limit?: number;
+          /** @enum {string} */
+          type?: "testerlimit";
+        };
+        /** TesterDeviceOsAccessCondition */
+        TesterDeviceOsAccessCondition: {
+          operatingSystem?: string;
+          /** @enum {string} */
+          type?: "testerDeviceOs";
+        };
+        /** TesterDeviceTypeAccessCondition */
+        TesterDeviceTypeAccessCondition: {
+          deviceType?: string;
+          /** @enum {string} */
+          type?: "testerDeviceType";
+        };
+        /** TesterDeviceOsVersionAccessCondition */
+        TesterDeviceOsVersionAccessCondition: {
+          operatingSystemVersion?: string;
+          /** @enum {string} */
+          type?: "testerDeviceOsVersion";
+        };
+      };
+    };
+    operations: {};
+  };
+  "Results/Results.yaml": {
+    paths: {};
+    components: {
+      schemas: {
+        /** Result */
+        Result: {
+          item: external["Results/Results.yaml"]["components"]["schemas"]["MediaResult"];
+          approved?: boolean;
+        };
+        /** MediaResult */
+        MediaResult: {
+          path: string;
+          comments?: {
+            timestamp?: string;
+            title?: string;
+            description?: string;
+          }[];
+        };
+      };
+    };
+    operations: {};
+  };
+  "Steps/Steps.yaml": {
+    paths: {};
+    components: {
+      schemas: {
+        /** Step */
+        Step: {
+          id?: string;
+          description?: string;
+        } & (
+          | external["Steps/Steps.yaml"]["components"]["schemas"]["BugFormStep"]
+          | external["Steps/Steps.yaml"]["components"]["schemas"]["MediaStep"]
+          | external["Steps/Steps.yaml"]["components"]["schemas"]["SurveyStep"]
+        );
+        /** BugFormStep */
+        BugFormStep: {
+          /** @enum {string} */
+          type?: "bug";
+        };
+        /** SurveyStep */
+        SurveyStep: {
+          /** @enum {string} */
+          type?: "survey";
+        };
+        /** MediaStep */
+        MediaStep: {
+          /** @enum {string} */
+          type?: "media";
+        };
+      };
+    };
+    operations: {};
+  };
+}

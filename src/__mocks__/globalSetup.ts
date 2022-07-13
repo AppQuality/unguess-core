@@ -4,6 +4,9 @@ import AccessConditions from "./mockedDb/accessConditions";
 import Service from "./mockedDb/service";
 import Steps from "./mockedDb/steps";
 import StepsMedia from "./mockedDb/stepsMedia";
+import Results from "./mockedDb/results";
+import ResultsMedia from "./mockedDb/resultsMedia";
+import ResultsMediaComments from "./mockedDb/resultsMediaComments";
 
 export {};
 beforeAll(async () => {
@@ -13,4 +16,7 @@ beforeAll(async () => {
   ServiceTemplates.mock();
   Steps.mock();
   StepsMedia.mock();
+  Results.mock();
+  ResultsMedia.mock();
+  ResultsMediaComments.mock();
 });
