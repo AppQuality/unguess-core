@@ -230,6 +230,10 @@ components:
       properties:
         id:
           type: string
+        source:
+          type: string
+          enum:
+            - tryber
   securitySchemes:
     Key:
       name: API Key

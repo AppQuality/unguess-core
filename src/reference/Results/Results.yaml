@@ -23,5 +23,27 @@ components:
         id: 1m5oma8jmz0i9
       type: object
       properties:
-        id:
+        item:
+          oneOf:
+            - $ref: '#/components/schemas/MediaResult'
+        approved:
+          type: boolean
+    MediaResult:
+      title: MediaResult
+      x-stoplight:
+        id: z3hi3g8cup6dz
+      type: object
+      properties:
+        path:
           type: string
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
