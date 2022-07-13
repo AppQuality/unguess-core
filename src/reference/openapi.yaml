@@ -213,13 +213,31 @@ paths:
                   - type: object
                     properties:
                       results:
-                        type: string
+                        type: array
+                        items:
+                          $ref: ./Results/Results.yaml#/components/schemas/Result
                   - type: object
                     properties:
                       quest:
                         type: number
                       service:
                         type: number
+              examples:
+                example-1:
+                  value:
+                    id: string
+                    description: string
+                    type: media
+                    results:
+                      - item:
+                          path: string
+                          comments:
+                            - timestamp: string
+                              title: string
+                              description: string
+                        approved: true
+                    quest: 0
+                    service: 0
       security:
         - Key: []
       x-internal: false
