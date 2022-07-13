@@ -3,6 +3,7 @@ import ServiceTemplates from "./mockedDb/serviceTemplates";
 import AccessConditions from "./mockedDb/accessConditions";
 import Service from "./mockedDb/service";
 import Steps from "./mockedDb/steps";
+import StepsMedia from "./mockedDb/stepsMedia";
 
 export {};
 beforeAll(async () => {
@@ -11,4 +12,5 @@ beforeAll(async () => {
   Service.mock();
   ServiceTemplates.mock();
   Steps.mock();
+  StepsMedia.mock();
 });
