@@ -1,8 +1,6 @@
 openapi: 3.1.0
-x-stoplight:
-  id: b8clt14el6lki
 info:
-  title: UNGUESS CORE
+  title: Access Conditions Schemas
   description: Unguess core api
   contact:
     email: it@unguess.io
@@ -114,8 +112,4 @@ components:
           type: string
           enum:
             - testerDeviceOsVersion
-  securitySchemes:
-    Key:
-      name: API Key
-      type: apiKey
-      in: header
+  securitySchemes: {}

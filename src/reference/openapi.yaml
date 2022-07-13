@@ -214,59 +214,14 @@ components:
       properties:
         steps:
           oneOf:
-            - $ref: '#/components/schemas/Step'
+            - $ref: ./Steps/Steps.yaml#/components/schemas/Step
             - type: array
               items:
-                $ref: '#/components/schemas/Step'
+                $ref: ./Steps/Steps.yaml#/components/schemas/Step
         access:
           type: array
           items:
             $ref: ./AccessConditions/AccessConditions.yaml#/components/schemas/AccessCondition
-    Step:
-      title: Step
-      x-stoplight:
-        id: civvi8fyr15z4
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-            description:
-              type: string
-        - oneOf:
-            - $ref: '#/components/schemas/BugFormStep'
-            - $ref: '#/components/schemas/MediaStep'
-            - $ref: '#/components/schemas/SurveyStep'
-    BugFormStep:
-      title: BugFormStep
-      x-stoplight:
-        id: 8sgo1eehf94o0
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - bug
-    SurveyStep:
-      title: SurveyStep
-      x-stoplight:
-        id: n21983o003erp
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - survey
-    MediaStep:
-      title: MediaStep
-      x-stoplight:
-        id: 8094si4w0nj6e
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - media
     Author:
       title: Author
       x-stoplight:

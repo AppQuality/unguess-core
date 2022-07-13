@@ -3,8 +3,15 @@ x-stoplight:
   id: be3c3km33xru2
 info:
   title: Results Schemas
+  description: Unguess core api
+  contact:
+    email: it@unguess.io
+    name: Unguess
+    url: 'https://unguess.io'
   version: '1.0'
-  description: ''
+  license:
+    name: license
+    url: 'https://unguess.io'
 servers:
   - url: 'http://localhost:3000'
 paths: {}
