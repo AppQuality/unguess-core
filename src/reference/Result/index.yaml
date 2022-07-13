@@ -2,8 +2,9 @@ openapi: 3.1.0
 x-stoplight:
   id: be3c3km33xru2
 info:
-  title: Result2
+  title: Results Schemas
   version: '1.0'
+  description: ''
 servers:
   - url: 'http://localhost:3000'
 paths: {}

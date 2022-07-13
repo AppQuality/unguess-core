@@ -174,7 +174,7 @@ paths:
                 author:
                   $ref: '#/components/schemas/Author'
                 result:
-                  $ref: ./Result/Result.yaml#/components/schemas/Result
+                  $ref: ./Result/index.yaml#/components/schemas/Result
       tags:
         - Services
         - Quests
