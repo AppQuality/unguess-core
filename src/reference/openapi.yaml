@@ -138,23 +138,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Quest'
-  '/services/{serviceId}/quests/{questId}':
+  '/quests/{questId}':
     parameters:
-      - schema:
-          type: string
-        name: serviceId
-        in: path
-        required: true
-        description: The id of the service
-      - schema:
-          type: string
-        name: questId
-        in: path
-        required: true
-        description: The id of the quest
+      - $ref: '#/components/parameters/questId'
     get:
-      summary: ''
-      operationId: get-services-serviceId-quests-questId
+      summary: Get Quests details
+      operationId: get-quests-questId
       responses:
         '200':
           description: OK
@@ -167,38 +156,24 @@ paths:
                     properties:
                       results:
                         type: string
+                  - type: object
+                    properties:
+                      service:
+                        type: number
       security:
         - Key: []
       x-internal: false
       parameters:
-        - schema:
-            type: string
-            enum:
-              - results
-          in: query
-          name: expand
-  '/services/{serviceId}/quests/{questId}/steps/{stepId}':
+        - $ref: '#/components/parameters/expand'
+      tags:
+        - Quests
+      description: Retrieve the quest details
+  '/steps/{stepId}':
     parameters:
-      - schema:
-          type: string
-        name: serviceId
-        in: path
-        required: true
-        description: The id of the service
-      - schema:
-          type: string
-        name: questId
-        in: path
-        required: true
-        description: The id of the quest
-      - schema:
-          type: string
-        name: stepId
-        in: path
-        required: true
+      - $ref: '#/components/parameters/stepId'
     post:
       summary: Push a new results to a quest
-      operationId: post-services-serviceId-quests-questId
+      operationId: post-steps-stepId
       responses:
         '200':
           description: OK
@@ -223,8 +198,8 @@ paths:
         - Services
         - Quests
     get:
-      summary: ''
-      operationId: get-services-serviceId-quests-questId
+      summary: Get steps details and results
+      operationId: get-steps-stepId
       responses:
         '200':
           description: OK
@@ -237,16 +212,18 @@ paths:
                     properties:
                       results:
                         type: string
+                  - type: object
+                    properties:
+                      quest:
+                        type: number
+                      service:
+                        type: number
       security:
         - Key: []
       x-internal: false
       parameters:
-        - schema:
-            type: string
-            enum:
-              - results
-          in: query
-          name: expand
+        - $ref: '#/components/parameters/expand'
+      description: Retrieve details of the step and optional details
   /serviceTemplates:
     get:
       summary: Get All Templates
@@ -308,3 +285,27 @@ components:
       name: API Key
       type: apiKey
       in: header
+  parameters:
+    expand:
+      name: expand
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - results
+      description: Expand results
+    stepId:
+      name: stepId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The id of the step
+    questId:
+      name: questId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The id of the quest
