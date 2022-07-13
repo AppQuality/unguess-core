@@ -1,5 +1,6 @@
 import request from "supertest";
 import Steps from "@src/__mocks__/mockedDb/steps";
+import Results from "@src/__mocks__/mockedDb/results";
 import app from "@src/app";
 
 beforeAll(async () => {
@@ -10,6 +11,10 @@ beforeAll(async () => {
   });
 });
 describe("POST /steps/{stepsId}", () => {
+  afterEach(async () => {
+    await Results.clear();
+  });
+
   it("should answer 403 without api key", async () => {
     return request(app).post("/steps/1").expect(403);
   });
@@ -41,7 +46,48 @@ describe("POST /steps/{stepsId}", () => {
         result: { approved: false, item: { path: "https://google.com" } },
       })
       .set("authorization", "valid");
-    console.log(response.body);
     expect(response.status).toBe(200);
+  });
+
+  it("should answer return approved as false if not provided", async () => {
+    const response = await request(app)
+      .post("/steps/1")
+      .send({
+        result: { item: { path: "https://google.com" } },
+      })
+      .set("authorization", "valid");
+    expect(response.status).toBe(200);
+
+    const res = await Results.first(
+      ["approved"],
+      [
+        {
+          step_id: 1,
+        },
+      ]
+    );
+    expect(res).not.toBeNull();
+    expect(res.approved).toBe(0);
+  });
+
+  it("should answer return approved as true if provided", async () => {
+    const response = await request(app)
+      .post("/steps/1")
+      .send({
+        result: { approved: true, item: { path: "https://google.com" } },
+      })
+      .set("authorization", "valid");
+    expect(response.status).toBe(200);
+
+    const res = await Results.first(
+      ["approved"],
+      [
+        {
+          step_id: 1,
+        },
+      ]
+    );
+    expect(res).not.toBeNull();
+    expect(res.approved).toBe(1);
   });
 });

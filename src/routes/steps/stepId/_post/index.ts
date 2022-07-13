@@ -8,6 +8,7 @@ export default async (
   req: OpenapiRequest,
   res: OpenapiResponse
 ): Promise<Response200 | Response400> => {
+  const body = req.body as Body;
   const { stepId } = c.request.params as Params;
   const step = await getStepById();
   if (!step) {
@@ -16,7 +17,23 @@ export default async (
       error: "step not found",
     };
   }
+
+  try {
+    await db.query(
+      db.format("INSERT INTO results (step_id, approved) VALUES (?, ?)", [
+        stepId,
+        body.result.approved ? 1 : 0,
+      ])
+    );
+  } catch (e) {
+    res.status_code = 400;
+    return {
+      error: (e as OpenapiError).message,
+    };
+  }
+
   res.status_code = 200;
+
   return {};
 
   async function getStepById() {
