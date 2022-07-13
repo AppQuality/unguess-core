@@ -12,23 +12,36 @@ info:
   license:
     name: license
     url: 'https://unguess.io'
+tags:
+  - name: Quests
+    description: The unit of work for the testers
+  - name: Services
+    description: The item bought from the customer
+  - name: Templates
+    description: A simple configuration used as a starting point
 servers:
   - url: 'http://localhost:3000'
 paths:
   /quests:
     get:
       summary: Get All Quests
-      tags: []
-      responses: {}
+      tags:
+        - Quests
+      responses:
+        '200':
+          description: OK
       operationId: get-quests
-      description: ''
+      description: 'Get all the quest available, regardless of the access conditions'
       security:
         - Key: []
   /services:
     get:
       summary: Get All Services
-      tags: []
-      responses: {}
+      tags:
+        - Services
+      responses:
+        '200':
+          description: OK
       operationId: get-services
       description: Get the services currently instantiated
       security:
@@ -57,7 +70,7 @@ paths:
                             id:
                               type: string
                         - $ref: '#/components/schemas/Quest'
-      description: ''
+      description: Create a new service from a template
       requestBody:
         content:
           application/json:
@@ -80,9 +93,12 @@ paths:
         name: id
         in: path
         required: true
+        description: The id of the service
     get:
       summary: Get the quests of a service
-      tags: []
+      tags:
+        - Services
+        - Quests
       responses:
         '200':
           description: OK
@@ -100,6 +116,7 @@ paths:
                         - id
                     - $ref: '#/components/schemas/Quest'
       operationId: get-services-id-quests
+      description: Get the quest of an instance of service
     post:
       summary: Create a new quest in a service
       operationId: post-services-id-quests
@@ -115,16 +132,57 @@ paths:
                       id:
                         type: string
                   - $ref: '#/components/schemas/Quest'
-      description: ''
+      description: Add a new quest to the instance of a service
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Quest'
+  '/services/{serviceId}/quests/{questId}':
+    parameters:
+      - schema:
+          type: string
+        name: serviceId
+        in: path
+        required: true
+        description: The id of the service
+      - schema:
+          type: string
+        name: questId
+        in: path
+        required: true
+        description: The id of the quest
+    post:
+      summary: Push a new results to a quest
+      operationId: post-services-serviceId-quests-questId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      description: 'Allow an user to link something (a video, a bug, a survey result...) to a quest'
+      security:
+        - Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                author:
+                  $ref: '#/components/schemas/Author'
+                result:
+                  $ref: ./Result/Result.yaml
+      tags:
+        - Services
+        - Quests
   /serviceTemplates:
     get:
       summary: Get All Templates
-      tags: []
+      tags:
+        - Templates
       operationId: get-serviceTemplates
       description: Get all Service templates
       security:
@@ -148,14 +206,6 @@ paths:
                     - name
 components:
   schemas:
-    Service:
-      title: Service
-      x-stoplight:
-        id: 2kt1wrskd9srq
-      type: object
-      properties:
-        id:
-          type: string
     Quest:
       title: Quest
       x-stoplight:
@@ -307,6 +357,22 @@ components:
           type: string
           enum:
             - testerDeviceOsVersion
+    Result:
+      title: Result
+      x-stoplight:
+        id: 08efaeqx7tcs5
+      type: object
+      properties:
+        id:
+          type: string
+    Author:
+      title: Author
+      x-stoplight:
+        id: 4xbbnpcg2a60y
+      type: object
+      properties:
+        id:
+          type: string
   securitySchemes:
     Key:
       name: API Key

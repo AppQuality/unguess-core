@@ -1,0 +1,7 @@
+title: Result
+x-stoplight:
+  id: mvgylwhs9ryqg
+type: object
+properties:
+  id:
+    type: string
