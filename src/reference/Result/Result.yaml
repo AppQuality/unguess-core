@@ -1,7 +1,19 @@
-title: Result
+openapi: 3.1.0
 x-stoplight:
-  id: mvgylwhs9ryqg
-type: object
-properties:
-  id:
-    type: string
+  id: be3c3km33xru2
+info:
+  title: Result2
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths: {}
+components:
+  schemas:
+    Result:
+      title: Result
+      x-stoplight:
+        id: 1m5oma8jmz0i9
+      type: object
+      properties:
+        id:
+          type: string
