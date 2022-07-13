@@ -1,8 +1,8 @@
 openapi: 3.1.0
 x-stoplight:
-  id: 1lu8j20uh9wg2
+  id: czvoxgh232ond
 info:
-  title: AccessConditions
+  title: Steps
   version: '1.0'
 servers:
   - url: 'http://localhost:3000'

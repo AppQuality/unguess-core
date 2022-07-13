@@ -1,0 +1,121 @@
+openapi: 3.1.0
+x-stoplight:
+  id: b8clt14el6lki
+info:
+  title: UNGUESS CORE
+  description: Unguess core api
+  contact:
+    email: it@unguess.io
+    name: Unguess
+    url: 'https://unguess.io'
+  version: '1.0'
+  license:
+    name: license
+    url: 'https://unguess.io'
+tags:
+  - name: Quests
+    description: The unit of work for the testers
+  - name: Services
+    description: The item bought from the customer
+  - name: Templates
+    description: A simple configuration used as a starting point
+servers:
+  - url: 'http://localhost:3000'
+paths: {}
+components:
+  schemas:
+    AccessCondition:
+      title: AccessCondition
+      x-stoplight:
+        id: h3tbhx96brqgb
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+        - oneOf:
+            - $ref: '#/components/schemas/TimedAccessCondition'
+            - $ref: '#/components/schemas/TesterListAccessCondition'
+            - $ref: '#/components/schemas/TesterLimitAccessCondition'
+            - $ref: '#/components/schemas/TesterDeviceOsVersionAccessCondition'
+            - $ref: '#/components/schemas/TesterDeviceTypeAccessCondition'
+            - $ref: '#/components/schemas/TesterDeviceOsAccessCondition'
+    TimedAccessCondition:
+      title: TimedAccessCondition
+      x-stoplight:
+        id: mdxonzt66170m
+      type: object
+      properties:
+        endDate:
+          type: string
+        type:
+          type: string
+          enum:
+            - timed
+    TesterListAccessCondition:
+      title: TesterListAccessCondition
+      x-stoplight:
+        id: rh1ncxf5whe5y
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: integer
+        type:
+          type: string
+          enum:
+            - testerlist
+    TesterLimitAccessCondition:
+      title: TesterLimitAccessCondition
+      x-stoplight:
+        id: i7cnb62aujjvk
+      type: object
+      properties:
+        limit:
+          type: number
+        type:
+          type: string
+          enum:
+            - testerlimit
+    TesterDeviceOsAccessCondition:
+      title: TesterDeviceOsAccessCondition
+      x-stoplight:
+        id: g7vye1s521ng0
+      type: object
+      properties:
+        operatingSystem:
+          type: string
+        type:
+          type: string
+          enum:
+            - testerDeviceOs
+    TesterDeviceTypeAccessCondition:
+      title: TesterDeviceTypeAccessCondition
+      x-stoplight:
+        id: g7vye1s521ng0
+      type: object
+      properties:
+        deviceType:
+          type: string
+        type:
+          type: string
+          enum:
+            - testerDeviceType
+    TesterDeviceOsVersionAccessCondition:
+      title: TesterDeviceOsVersionAccessCondition
+      x-stoplight:
+        id: g7vye1s521ng0
+      type: object
+      properties:
+        operatingSystemVersion:
+          type: string
+        type:
+          type: string
+          enum:
+            - testerDeviceOsVersion
+  securitySchemes:
+    Key:
+      name: API Key
+      type: apiKey
+      in: header

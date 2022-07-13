@@ -174,7 +174,7 @@ paths:
                 author:
                   $ref: '#/components/schemas/Author'
                 result:
-                  $ref: ./Result/index.yaml#/components/schemas/Result
+                  $ref: ./Results/Results.yaml#/components/schemas/Result
       tags:
         - Services
         - Quests
@@ -221,7 +221,7 @@ components:
         access:
           type: array
           items:
-            $ref: '#/components/schemas/AccessCondition'
+            $ref: ./AccessConditions/AccessConditions.yaml#/components/schemas/AccessCondition
     Step:
       title: Step
       x-stoplight:
@@ -237,22 +237,6 @@ components:
             - $ref: '#/components/schemas/BugFormStep'
             - $ref: '#/components/schemas/MediaStep'
             - $ref: '#/components/schemas/SurveyStep'
-    AccessCondition:
-      title: AccessCondition
-      x-stoplight:
-        id: h3tbhx96brqgb
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-        - oneOf:
-            - $ref: '#/components/schemas/TimedAccessCondition'
-            - $ref: '#/components/schemas/TesterListAccessCondition'
-            - $ref: '#/components/schemas/TesterLimitAccessCondition'
-            - $ref: '#/components/schemas/TesterDeviceOsVersionAccessCondition'
-            - $ref: '#/components/schemas/TesterDeviceTypeAccessCondition'
-            - $ref: '#/components/schemas/TesterDeviceOsAccessCondition'
     BugFormStep:
       title: BugFormStep
       x-stoplight:
@@ -283,88 +267,6 @@ components:
           type: string
           enum:
             - media
-    TimedAccessCondition:
-      title: TimedAccessCondition
-      x-stoplight:
-        id: mdxonzt66170m
-      type: object
-      properties:
-        endDate:
-          type: string
-        type:
-          type: string
-          enum:
-            - timed
-    TesterListAccessCondition:
-      title: TesterListAccessCondition
-      x-stoplight:
-        id: rh1ncxf5whe5y
-      type: object
-      properties:
-        list:
-          type: array
-          items:
-            type: integer
-        type:
-          type: string
-          enum:
-            - testerlist
-    TesterLimitAccessCondition:
-      title: TesterLimitAccessCondition
-      x-stoplight:
-        id: i7cnb62aujjvk
-      type: object
-      properties:
-        limit:
-          type: number
-        type:
-          type: string
-          enum:
-            - testerlimit
-    TesterDeviceOsAccessCondition:
-      title: TesterDeviceOsAccessCondition
-      x-stoplight:
-        id: g7vye1s521ng0
-      type: object
-      properties:
-        operatingSystem:
-          type: string
-        type:
-          type: string
-          enum:
-            - testerDeviceOs
-    TesterDeviceTypeAccessCondition:
-      title: TesterDeviceTypeAccessCondition
-      x-stoplight:
-        id: g7vye1s521ng0
-      type: object
-      properties:
-        deviceType:
-          type: string
-        type:
-          type: string
-          enum:
-            - testerDeviceType
-    TesterDeviceOsVersionAccessCondition:
-      title: TesterDeviceOsVersionAccessCondition
-      x-stoplight:
-        id: g7vye1s521ng0
-      type: object
-      properties:
-        operatingSystemVersion:
-          type: string
-        type:
-          type: string
-          enum:
-            - testerDeviceOsVersion
-    Result:
-      title: Result
-      x-stoplight:
-        id: 08efaeqx7tcs5
-      type: object
-      properties:
-        id:
-          type: string
     Author:
       title: Author
       x-stoplight:
