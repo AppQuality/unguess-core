@@ -155,11 +155,39 @@ paths:
                   - type: object
                     properties:
                       results:
-                        type: string
+                        type: array
+                        items:
+                          allOf:
+                            - type: object
+                              properties:
+                                step:
+                                  type: number
+                            - $ref: ./Results/Results.yaml#/components/schemas/Result
                   - type: object
                     properties:
                       service:
                         type: number
+              examples:
+                example-1:
+                  value:
+                    steps:
+                      id: string
+                      description: string
+                      type: bug
+                    access:
+                      - id: string
+                        endDate: string
+                        type: timed
+                    results:
+                      - step: 0
+                        item:
+                          path: string
+                          comments:
+                            - timestamp: string
+                              title: string
+                              description: string
+                        approved: true
+                    service: 0
       security:
         - Key: []
       x-internal: false
