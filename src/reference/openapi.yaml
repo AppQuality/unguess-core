@@ -194,6 +194,8 @@ paths:
                   $ref: '#/components/schemas/Author'
                 result:
                   $ref: ./Results/Results.yaml#/components/schemas/Result
+              required:
+                - result
       tags:
         - Services
         - Quests
