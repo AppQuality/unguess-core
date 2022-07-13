@@ -3,6 +3,8 @@ import Quests from "@src/__mocks__/mockedDb/quests";
 import Services from "@src/__mocks__/mockedDb/service";
 import ServiceTemplates from "@src/__mocks__/mockedDb/serviceTemplates";
 import AccessConditions from "@src/__mocks__/mockedDb/accessConditions";
+import Steps from "@src/__mocks__/mockedDb/steps";
+import StepsMedia from "@src/__mocks__/mockedDb/stepsMedia";
 
 import app from "@src/app";
 
@@ -22,7 +24,7 @@ beforeAll(async () => {
 
   await ServiceTemplates.insert({
     id: 3,
-    name: "My service with two quests",
+    name: "My service with access condition",
     config: JSON.stringify({
       quests: [
         {
@@ -30,6 +32,21 @@ beforeAll(async () => {
           accessConditions: [
             { type: "timeLimit", value: "2022-01-01T00:00:00.000Z+02:00" },
           ],
+        },
+      ],
+    }),
+  });
+  await ServiceTemplates.insert({
+    id: 4,
+    name: "My service with a media step",
+    config: JSON.stringify({
+      quests: [
+        {
+          name: "quest1",
+          accessConditions: [
+            { type: "timeLimit", value: "2022-01-01T00:00:00.000Z+02:00" },
+          ],
+          steps: [{ type: "media", fileTypes: ["image/png", "video/mp4"] }],
         },
       ],
     }),
@@ -45,6 +62,8 @@ describe("POST /services", () => {
     await Services.clear();
     await Quests.clear();
     await AccessConditions.clear();
+    await Steps.clear();
+    await StepsMedia.clear();
   });
   it("should answer 403 without api key", async () => {
     return request(app).post("/services").expect(403);
@@ -138,5 +157,23 @@ describe("POST /services", () => {
     expect(accessConditions.length).toBe(1);
     expect(accessConditions[0].type).toBe("timeLimit");
     expect(accessConditions[0].value).toBe("2022-01-01T00:00:00.000Z+02:00");
+  });
+  it("should create a service with a quest with a media step if the template has the configuration for it", async () => {
+    await request(app)
+      .post("/services")
+      .send({ name: "New service", templateId: 4 })
+      .set("authorization", "valid");
+    const service = await Services.first();
+    expect(service).not.toBeNull();
+    const quest = await Quests.first(undefined, [{ service_id: service.id }]);
+    expect(quest).not.toBeNull();
+    const steps = await Steps.all(undefined, [{ quest_id: quest.id }]);
+    expect(steps.length).toBe(1);
+    expect(steps[0].type).toBe("media");
+    const stepsMediaConfiguration = await StepsMedia.all(undefined, [
+      { step_id: steps[0].id },
+    ]);
+    expect(stepsMediaConfiguration.length).toBe(1);
+    expect(stepsMediaConfiguration[0].file_types).toBe("image/png,video/mp4");
   });
 });
