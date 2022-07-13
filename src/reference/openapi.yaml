@@ -168,12 +168,35 @@ paths:
                       service:
                         type: number
               examples:
-                example-1:
+                single-step-quest:
                   value:
                     steps:
-                      id: string
+                      id: 0
                       description: string
-                      type: bug
+                      type: media
+                    access:
+                      - id: string
+                        endDate: string
+                        type: timed
+                    results:
+                      - step: 1
+                        item:
+                          path: string
+                          comments:
+                            - timestamp: string
+                              title: string
+                              description: string
+                        approved: true
+                    service: 0
+                multi-step-quest:
+                  value:
+                    steps:
+                      - id: 0
+                        description: example step 1 string
+                        type: media
+                      - id: 0
+                        description: example step 2 string
+                        type: media
                     access:
                       - id: string
                         endDate: string
@@ -253,7 +276,7 @@ paths:
               examples:
                 example-1:
                   value:
-                    id: string
+                    id: 0
                     description: string
                     type: media
                     results:

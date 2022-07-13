@@ -32,7 +32,7 @@ components:
         - type: object
           properties:
             id:
-              type: string
+              type: number
             description:
               type: string
         - oneOf:
