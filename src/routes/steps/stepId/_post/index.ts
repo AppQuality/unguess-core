@@ -10,6 +10,7 @@ export default async (
 ): Promise<Response200 | Response400> => {
   const body = req.body as Body;
   const { stepId } = c.request.params as Params;
+  const { result } = body;
   const step = await getStepById();
   if (!step) {
     res.status_code = 400;
@@ -19,12 +20,11 @@ export default async (
   }
 
   try {
-    await db.query(
-      db.format("INSERT INTO results (step_id, approved) VALUES (?, ?)", [
-        stepId,
-        body.result.approved ? 1 : 0,
-      ])
-    );
+    const item = await createResult();
+
+    if (isMediaResult()) {
+      await createMediaResult(item.id);
+    }
   } catch (e) {
     res.status_code = 400;
     return {
@@ -36,10 +36,36 @@ export default async (
 
   return {};
 
-  async function getStepById() {
+  async function createResult() {
+    const res = await db.query(
+      db.format("INSERT INTO results (step_id, approved) VALUES (?, ?)", [
+        stepId,
+        result.approved ? 1 : 0,
+      ])
+    );
+    if (!res.insertId) {
+      throw new Error("Error on INSERT");
+    }
+    return { ...result, id: res.insertId };
+  }
+
+  async function createMediaResult(id: number) {
+    await db.query(
+      db.format("INSERT INTO results_media (result_id,path) VALUES (?,?)", [
+        id,
+        result.item.path,
+      ])
+    );
+  }
+
+  function isMediaResult() {
+    return step && step.type === "media";
+  }
+
+  async function getStepById(): Promise<{ id: number; type: string } | false> {
     try {
       const steps = await db.query(
-        db.format(`SELECT * FROM steps WHERE id = ?`, [stepId])
+        db.format(`SELECT id,type FROM steps WHERE id = ?`, [stepId])
       );
       if (steps.length === 0) {
         return false;
