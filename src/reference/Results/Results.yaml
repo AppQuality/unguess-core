@@ -28,6 +28,8 @@ components:
             - $ref: '#/components/schemas/MediaResult'
         approved:
           type: boolean
+      required:
+        - item
     MediaResult:
       title: MediaResult
       x-stoplight:
