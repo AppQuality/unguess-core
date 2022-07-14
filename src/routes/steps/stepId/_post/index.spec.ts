@@ -98,6 +98,34 @@ describe("POST /steps/{stepsId}", () => {
     expect(res).not.toBeUndefined();
     expect(res.approved).toBe(1);
   });
+
+  it("should link author if provided", async () => {
+    const response = await request(app)
+      .post("/steps/1")
+      .send({
+        author: { id: "15", source: "tryber" },
+        result: {
+          approved: true,
+          item: {
+            path: "https://google.com",
+          },
+        },
+      })
+      .set("authorization", "valid");
+    expect(response.status).toBe(200);
+
+    const res = await Results.first(
+      ["author_id", "author_src"],
+      [
+        {
+          step_id: 1,
+        },
+      ]
+    );
+    expect(res).not.toBeUndefined();
+    expect(res.author_id).toBe(15);
+    expect(res.author_src).toBe("tryber");
+  });
 });
 
 describe("POST /steps/{stepsId} - media type", () => {

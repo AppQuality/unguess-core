@@ -65,9 +65,9 @@ export interface components {
     };
     /** Author */
     Author: {
-      id?: string;
+      id: string;
       /** @enum {string} */
-      source?: "tryber";
+      source: "tryber";
     };
   };
   parameters: {
@@ -180,7 +180,9 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Quest"] & {
-            results?: string;
+            results?: ({
+              step?: number;
+            } & external["Results/Results.yaml"]["components"]["schemas"]["Result"])[];
           } & {
             service?: number;
           };
@@ -205,7 +207,7 @@ export interface operations {
       200: {
         content: {
           "application/json": external["Steps/Steps.yaml"]["components"]["schemas"]["Step"] & {
-            results?: string;
+            results?: external["Results/Results.yaml"]["components"]["schemas"]["Result"][];
           } & {
             quest?: number;
             service?: number;
@@ -339,7 +341,7 @@ export interface external {
       schemas: {
         /** Step */
         Step: {
-          id?: string;
+          id?: number;
           description?: string;
         } & (
           | external["Steps/Steps.yaml"]["components"]["schemas"]["BugFormStep"]

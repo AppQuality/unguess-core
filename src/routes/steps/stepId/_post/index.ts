@@ -8,9 +8,8 @@ export default async (
   req: OpenapiRequest,
   res: OpenapiResponse
 ): Promise<Response200 | Response400> => {
-  const body = req.body as Body;
+  const { author, result } = req.body as Body;
   const { stepId } = c.request.params as Params;
-  const { result } = body;
   const step = await getStepById();
   if (!step) {
     res.status_code = 400;
@@ -37,11 +36,19 @@ export default async (
   return {};
 
   async function createResult() {
+    let columns = ["step_id", "approved"];
+    let values = [stepId, result.approved ? 1 : 0];
+    if (author) {
+      columns = [...columns, "author_id", "author_src"];
+      values = [...values, author.id, author.source];
+    }
     const res = await db.query(
-      db.format("INSERT INTO results (step_id, approved) VALUES (?, ?)", [
-        stepId,
-        result.approved ? 1 : 0,
-      ])
+      db.format(
+        `INSERT INTO results 
+        (${columns.join(", ")}) 
+        VALUES (${columns.map(() => `?`).join(", ")})`,
+        values
+      )
     );
     if (!res.insertId) {
       throw new Error("Error on INSERT");
