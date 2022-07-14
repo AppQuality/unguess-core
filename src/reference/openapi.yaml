@@ -203,8 +203,7 @@ paths:
       security:
         - Key: []
       x-internal: false
-      parameters:
-        - $ref: '#/components/parameters/expand'
+      parameters: []
       tags:
         - Quests
       description: Retrieve the quest details
@@ -287,12 +286,6 @@ paths:
                   - $ref: ./Steps/Steps.yaml#/components/schemas/Step
                   - type: object
                     properties:
-                      results:
-                        type: array
-                        items:
-                          $ref: ./Results/Results.yaml#/components/schemas/Result
-                  - type: object
-                    properties:
                       quest:
                         type: number
                       service:
@@ -316,8 +309,6 @@ paths:
       security:
         - Key: []
       x-internal: false
-      parameters:
-        - $ref: '#/components/parameters/expand'
       description: Retrieve details of the step and optional details
   /serviceTemplates:
     get:
@@ -384,15 +375,6 @@ components:
       type: apiKey
       in: header
   parameters:
-    expand:
-      name: expand
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-          - results
-      description: Expand results
     stepId:
       name: stepId
       in: path
