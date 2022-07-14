@@ -36,6 +36,16 @@ export interface paths {
       };
     };
   };
+  "/quests/{questId}/results": {
+    /** Get the list of results of every step of the quest */
+    get: operations["get-quests-questId-results"];
+    parameters: {
+      path: {
+        /** The id of the quest */
+        questId: components["parameters"]["questId"];
+      };
+    };
+  };
   "/steps/{stepId}": {
     /** Retrieve details of the step and optional details */
     get: operations["get-steps-stepId"];
@@ -71,8 +81,6 @@ export interface components {
     };
   };
   parameters: {
-    /** @description Expand results */
-    expand: "results";
     /** @description The id of the step */
     stepId: string;
     /** @description The id of the quest */
@@ -170,22 +178,36 @@ export interface operations {
         /** The id of the quest */
         questId: components["parameters"]["questId"];
       };
-      query: {
-        /** Expand results */
-        expand?: components["parameters"]["expand"];
-      };
     };
     responses: {
       /** OK */
       200: {
         content: {
           "application/json": components["schemas"]["Quest"] & {
-            results?: ({
-              step?: number;
-            } & external["Results/Results.yaml"]["components"]["schemas"]["Result"])[];
-          } & {
             service?: number;
           };
+        };
+      };
+    };
+  };
+  /** Get the list of results of every step of the quest */
+  "get-quests-questId-results": {
+    parameters: {
+      path: {
+        /** The id of the quest */
+        questId: components["parameters"]["questId"];
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": ({
+            step: {
+              id: number;
+            } & external["Steps/Steps.yaml"]["components"]["schemas"]["StepType"];
+            author?: components["schemas"]["Author"];
+          } & external["Results/Results.yaml"]["components"]["schemas"]["Result"])[];
         };
       };
     };
@@ -197,18 +219,12 @@ export interface operations {
         /** The id of the step */
         stepId: components["parameters"]["stepId"];
       };
-      query: {
-        /** Expand results */
-        expand?: components["parameters"]["expand"];
-      };
     };
     responses: {
       /** OK */
       200: {
         content: {
           "application/json": external["Steps/Steps.yaml"]["components"]["schemas"]["Step"] & {
-            results?: external["Results/Results.yaml"]["components"]["schemas"]["Result"][];
-          } & {
             quest?: number;
             service?: number;
           };
@@ -343,11 +359,7 @@ export interface external {
         Step: {
           id?: number;
           description?: string;
-        } & (
-          | external["Steps/Steps.yaml"]["components"]["schemas"]["BugFormStep"]
-          | external["Steps/Steps.yaml"]["components"]["schemas"]["MediaStep"]
-          | external["Steps/Steps.yaml"]["components"]["schemas"]["SurveyStep"]
-        );
+        } & external["Steps/Steps.yaml"]["components"]["schemas"]["StepType"];
         /** BugFormStep */
         BugFormStep: {
           /** @enum {string} */
@@ -363,6 +375,11 @@ export interface external {
           /** @enum {string} */
           type?: "media";
         };
+        /** StepType */
+        StepType:
+          | external["Steps/Steps.yaml"]["components"]["schemas"]["BugFormStep"]
+          | external["Steps/Steps.yaml"]["components"]["schemas"]["MediaStep"]
+          | external["Steps/Steps.yaml"]["components"]["schemas"]["SurveyStep"];
       };
     };
     operations: {};

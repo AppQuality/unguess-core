@@ -5,7 +5,7 @@ type ResultsParams = {
   type?: string;
   author_id?: number;
   author_src?: string;
-  approved?: boolean;
+  approved?: number;
   step_id?: number;
 };
 const defaultItem: ResultsParams = {
@@ -13,7 +13,7 @@ const defaultItem: ResultsParams = {
   type: "type",
   author_id: 0,
   author_src: "TRYBER",
-  approved: true,
+  approved: 0,
   step_id: 0,
 };
 class Results extends Table<ResultsParams> {

@@ -65,16 +65,13 @@ mockDb.run = (query: string): Promise<any> => {
   });
 };
 
-mockDb.insert = (table: string, data: any): Promise<any> => {
-  return new Promise(async (resolve, reject) => {
-    const sql = `INSERT INTO ${table} (${Object.keys(data)
-      .map((d) => d)
-      .join(",")}) VALUES (${Object.keys(data)
-      .map(() => "?")
-      .join(",")});`;
-    const res = await db.prepare(sql).run(...Object.values(data));
-    resolve(res);
-  });
+mockDb.insert = async (table: string, data: any): Promise<any> => {
+  const sql = `INSERT INTO ${table} (${Object.keys(data)
+    .map((d) => d)
+    .join(",")}) VALUES (${Object.keys(data)
+    .map(() => "?")
+    .join(",")});`;
+  return await db.prepare(sql).run(...Object.values(data));
 };
 
 export default mockDb;
