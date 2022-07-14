@@ -234,10 +234,27 @@ paths:
                               required:
                                 - id
                             - $ref: ./Steps/Steps.yaml#/components/schemas/StepType
+                        author:
+                          $ref: '#/components/schemas/Author'
                       required:
                         - step
                     - $ref: ./Results/Results.yaml#/components/schemas/Result
-              examples: {}
+              examples:
+                example-1:
+                  value:
+                    - step:
+                        id: 0
+                        type: bug
+                      author:
+                        id: string
+                        source: tryber
+                      item:
+                        path: string
+                        comments:
+                          - timestamp: string
+                            title: string
+                            description: string
+                      approved: true
       operationId: get-quests-questId-results
       security:
         - Key: []
