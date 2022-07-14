@@ -351,6 +351,9 @@ components:
           type: string
           enum:
             - tryber
+      required:
+        - id
+        - source
   securitySchemes:
     Key:
       name: API Key
