@@ -35,10 +35,7 @@ components:
               type: number
             description:
               type: string
-        - oneOf:
-            - $ref: '#/components/schemas/BugFormStep'
-            - $ref: '#/components/schemas/MediaStep'
-            - $ref: '#/components/schemas/SurveyStep'
+        - $ref: '#/components/schemas/StepType'
     BugFormStep:
       title: BugFormStep
       x-stoplight:
@@ -69,6 +66,14 @@ components:
           type: string
           enum:
             - media
+    StepType:
+      title: StepType
+      x-stoplight:
+        id: bdfqlcrkw31as
+      oneOf:
+        - $ref: '#/components/schemas/BugFormStep'
+        - $ref: '#/components/schemas/MediaStep'
+        - $ref: '#/components/schemas/SurveyStep'
   securitySchemes:
     Key:
       name: API Key

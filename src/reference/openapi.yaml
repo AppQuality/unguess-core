@@ -154,17 +154,6 @@ paths:
                   - $ref: '#/components/schemas/Quest'
                   - type: object
                     properties:
-                      results:
-                        type: array
-                        items:
-                          allOf:
-                            - type: object
-                              properties:
-                                step:
-                                  type: number
-                            - $ref: ./Results/Results.yaml#/components/schemas/Result
-                  - type: object
-                    properties:
                       service:
                         type: number
               examples:
@@ -219,6 +208,41 @@ paths:
       tags:
         - Quests
       description: Retrieve the quest details
+  '/quests/{questId}/results':
+    parameters:
+      - $ref: '#/components/parameters/questId'
+    get:
+      summary: Get Quests results
+      tags:
+        - Quests
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - type: object
+                      properties:
+                        step:
+                          allOf:
+                            - type: object
+                              properties:
+                                id:
+                                  type: number
+                              required:
+                                - id
+                            - $ref: ./Steps/Steps.yaml#/components/schemas/StepType
+                      required:
+                        - step
+                    - $ref: ./Results/Results.yaml#/components/schemas/Result
+              examples: {}
+      operationId: get-quests-questId-results
+      security:
+        - Key: []
+      description: Get the list of results of every step of the quest
   '/steps/{stepId}':
     parameters:
       - $ref: '#/components/parameters/stepId'
