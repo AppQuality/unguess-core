@@ -29,29 +29,9 @@ export default async (
   const quests = await createQuests();
   for (const quest of quests) {
     await createAccessConditions(quest);
-    if (quest.steps) {
-      for (const step of quest.steps) {
-        if (step.type) {
-          const insertedStep = await db.query(
-            db.format(
-              `
-              INSERT INTO steps (type, quest_id) VALUES (?, ?)
-        `,
-              [step.type, quest.id]
-            )
-          );
-          const stepId = insertedStep.insertId;
-          await db.query(
-            db.format(
-              `
-              INSERT INTO steps_media (step_id, file_types) VALUES (?, ?)
-        `,
-              [stepId, step.fileTypes ? step.fileTypes.join(",") : ""]
-            )
-          );
-        }
-      }
-    }
+  }
+  for (const quest of quests) {
+    await createSteps(quest);
   }
 
   res.status_code = 200;
@@ -73,6 +53,38 @@ export default async (
     return results;
   }
 
+  async function createSteps(quest: Quest) {
+    if (!quest.steps) return;
+
+    for (const item of quest.steps) {
+      const step = await createStep(item);
+      if (step.type === "media") {
+        await createStepMediaConfiguration(step);
+      }
+    }
+
+    async function createStepMediaConfiguration(
+      step: Quest["steps"][0] & { id: number }
+    ) {
+      await db.query(
+        db.format(
+          `INSERT INTO steps_media (step_id, file_types) VALUES (?, ?)`,
+          [step.id, step.fileTypes ? step.fileTypes.join(",") : ""]
+        )
+      );
+    }
+
+    async function createStep(step: Quest["steps"][0]) {
+      if (!step.type) throw Error("No type for step");
+      const result = await db.query(
+        db.format(`INSERT INTO steps (type, quest_id) VALUES (?, ?)`, [
+          step.type,
+          quest.id,
+        ])
+      );
+      return { ...step, id: result.insertId };
+    }
+  }
   async function createAccessConditions(quest: Quest) {
     if (quest.accessConditions) {
       for (const accessCondition of quest.accessConditions) {
@@ -88,7 +100,6 @@ export default async (
       }
     }
   }
-
   async function getServiceTemplate() {
     const templates = await db.query(
       db.format("SELECT id,config FROM service_templates WHERE id = ?", [

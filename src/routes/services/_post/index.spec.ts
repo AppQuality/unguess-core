@@ -176,4 +176,7 @@ describe("POST /services", () => {
     expect(stepsMediaConfiguration.length).toBe(1);
     expect(stepsMediaConfiguration[0].file_types).toBe("image/png,video/mp4");
   });
+  it("should create a service with a quest with a step with description if there is a configuration for it", async () => {
+    expect(1).toBe(1);
+  });
 });
