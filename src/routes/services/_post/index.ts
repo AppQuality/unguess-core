@@ -29,6 +29,29 @@ export default async (
   const quests = await createQuests();
   for (const quest of quests) {
     await createAccessConditions(quest);
+    if (quest.steps) {
+      for (const step of quest.steps) {
+        if (step.type) {
+          const insertedStep = await db.query(
+            db.format(
+              `
+              INSERT INTO steps (type, quest_id) VALUES (?, ?)
+        `,
+              [step.type, quest.id]
+            )
+          );
+          const stepId = insertedStep.insertId;
+          await db.query(
+            db.format(
+              `
+              INSERT INTO steps_media (step_id, file_types) VALUES (?, ?)
+        `,
+              [stepId, step.fileTypes ? step.fileTypes.join(",") : ""]
+            )
+          );
+        }
+      }
+    }
   }
 
   res.status_code = 200;

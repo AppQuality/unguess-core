@@ -168,7 +168,7 @@ describe("POST /services", () => {
     const quest = await Quests.first(undefined, [{ service_id: service.id }]);
     expect(quest).not.toBeNull();
     const steps = await Steps.all(undefined, [{ quest_id: quest.id }]);
-    expect(steps.length).toBe(1);
+    expect(steps.length).toBe(1); //
     expect(steps[0].type).toBe("media");
     const stepsMediaConfiguration = await StepsMedia.all(undefined, [
       { step_id: steps[0].id },

@@ -28,6 +28,10 @@ declare global {
         type: components["schemas"]["AccessCondition"]["type"];
         value: string;
       }[];
+      steps: {
+        type: components["schemas"]["Step"]["type"];
+        fileTypes?: string[];
+      }[];
     }[];
   };
 }
