@@ -77,7 +77,7 @@ export default async (
       step: { id: r.id, type: r.type },
       approved: r.approved === 1,
       author: isValidAuthor(r)
-        ? { id: r.author_id, source: r.author_src }
+        ? { id: r.author_id.toString(), source: r.author_src }
         : undefined,
     }));
 

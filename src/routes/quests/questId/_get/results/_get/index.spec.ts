@@ -70,7 +70,7 @@ describe("Get /quests/{questsId}/results", () => {
         item: {
           path: "https://google.com",
         },
-        author: { id: 1, source: "tryber" },
+        author: { id: "1", source: "tryber" },
         approved: false,
       },
     ]);
