@@ -77,10 +77,10 @@ export default async (
     async function createStep(step: Quest["steps"][0]) {
       if (!step.type) throw Error("No type for step");
       const result = await db.query(
-        db.format(`INSERT INTO steps (type, quest_id) VALUES (?, ?)`, [
-          step.type,
-          quest.id,
-        ])
+        db.format(
+          `INSERT INTO steps (type, quest_id, description) VALUES (?, ?, ?)`,
+          [step.type, quest.id, step.description]
+        )
       );
       return { ...step, id: result.insertId };
     }

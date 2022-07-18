@@ -30,6 +30,7 @@ declare global {
       }[];
       steps: {
         type: components["schemas"]["Step"]["type"];
+        description?: string;
         fileTypes?: string[];
       }[];
     }[];

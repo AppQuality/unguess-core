@@ -46,7 +46,13 @@ beforeAll(async () => {
           accessConditions: [
             { type: "timeLimit", value: "2022-01-01T00:00:00.000Z+02:00" },
           ],
-          steps: [{ type: "media", fileTypes: ["image/png", "video/mp4"] }],
+          steps: [
+            {
+              type: "media",
+              description: "This is a step description",
+              fileTypes: ["image/png", "video/mp4"],
+            },
+          ],
         },
       ],
     }),
@@ -168,7 +174,7 @@ describe("POST /services", () => {
     const quest = await Quests.first(undefined, [{ service_id: service.id }]);
     expect(quest).not.toBeNull();
     const steps = await Steps.all(undefined, [{ quest_id: quest.id }]);
-    expect(steps.length).toBe(1); //
+    expect(steps.length).toBe(1);
     expect(steps[0].type).toBe("media");
     const stepsMediaConfiguration = await StepsMedia.all(undefined, [
       { step_id: steps[0].id },
@@ -177,6 +183,17 @@ describe("POST /services", () => {
     expect(stepsMediaConfiguration[0].file_types).toBe("image/png,video/mp4");
   });
   it("should create a service with a quest with a step with description if there is a configuration for it", async () => {
-    expect(1).toBe(1);
+    await request(app)
+      .post("/services")
+      .send({ name: "New service", templateId: 4 })
+      .set("authorization", "valid");
+    const service = await Services.first();
+    expect(service).not.toBeNull();
+    const quest = await Quests.first(undefined, [{ service_id: service.id }]);
+    expect(quest).not.toBeNull();
+    const steps = await Steps.all(undefined, [{ quest_id: quest.id }]);
+    expect(steps.length).toBe(1); //
+    console.log(steps[0]);
+    expect(steps[0].description).toBe("This is a step description");
   });
 });
