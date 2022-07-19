@@ -1,6 +1,6 @@
 # UNGUESS CORE API - BLOCKS
 
-[![Coverage Status](https://coveralls.io/repos/github/AppQuality/unguess-core/badge.svg?branch=master)](https://coveralls.io/github/AppQuality/unguess-core?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/AppQuality/unguess-core/badge.svg?branch=develop)](https://coveralls.io/github/AppQuality/unguess-core?branch=develop)
 
 Questo è il progetto iniziale per la definizione di un API di comunicazione tra i componenti del core di UNGUESS.
 
