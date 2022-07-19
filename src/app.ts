@@ -6,6 +6,7 @@ import config from "@src/config";
 import middleware from "./middleware";
 import getExample from "./middleware/getExample";
 import routes from "./routes";
+import fs from "fs";
 
 const opts: Options = {
   definition: __dirname + "/reference/openapi.yaml",
@@ -41,7 +42,15 @@ app.use(
 );
 
 app.get(referencePath, function (req, res) {
-  res.sendFile(__dirname + "/reference/openapi.yml");
+  res.sendFile(__dirname + "/reference/openapi.yaml");
+});
+app.get(`${referencePath}*`, function (req, res) {
+  const path = req.path.replace(referencePath, "");
+  if (!fs.existsSync(__dirname + "/reference/" + path)) {
+    res.status(404).send("Not found");
+    return;
+  }
+  res.sendFile(__dirname + "/reference/" + path);
 });
 
 app.use((req, res) => {
