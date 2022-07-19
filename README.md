@@ -1,5 +1,6 @@
 # UNGUESS CORE API - BLOCKS
 
+[![Coverage Status](https://coveralls.io/repos/github/AppQuality/unguess-core/badge.svg?branch=master)](https://coveralls.io/github/AppQuality/unguess-core?branch=master)
 Questo è il progetto iniziale per la definizione di un API di comunicazione tra i componenti del core di UNGUESS.
 
 L'obiettivo è quello di definire una serie di blocchi che possono essere utilizzati per costruire i servizi di UNGUESS. Ogni servizio potrà contare su un numero variabile di blocchi permettendoci di adattarci ad ogni necessità.
@@ -26,50 +27,58 @@ I blocchi base ma non unici che costituiscono un servizio sono:
 ```
 
 ## Quests
-E' l'elemendo fondamentale del servizio, corrisponde all'attività che si vuole completare ed è formata da un elenco di blocchettini di tipo [Step](#step). 
+
+E' l'elemendo fondamentale del servizio, corrisponde all'attività che si vuole completare ed è formata da un elenco di blocchettini di tipo [Step](#step).
 
 Prevede una serie di condizioni di accesso che determinano la partecipazione del tester e l'impatto sul costo del servizio e un numero atteso di output obiettivo (esempio: numero di tester con completamento della missione).
 
 ### Condizioni di accesso alla quest
+
 Consiste in un elenco di condizioni che devono essere soddisfatte per poter prendere parte alla quest. In questo modo il tester che soddisfa questi requisiti può in autonomia decidere se svolgere o meno la quest. Tutte le ulteriori logiche di ingaggio sono gestite direttamente dalla piattaforma dei tester che potrà estendere queste condizioni.
 
 > ESEMPIO: QUEST RAPIDA
-> 
+>
 > La piattaforma dei tester potrò decidere di auto-eliminare la partecipazione di un tester se non viene completata entro un certo tempo. In questo modo verrà liberato un posto che potrà essere occupato da un altro tester con le medesime caratteristiche. Il tutto senza influenzare la piattaforma customer o quella core.
 
-
 Le regole di accesso inizialmente disponibili saranno:
+
 - TimedAccessCondition: La quest è accessibile solo per un determinato periodo di tempo.
 - TesterListAccessCondition: La quest è accessibile solo per una lista di tester specifica.
 - TesterDeviceAccessCondition: La quest è accessibile solo per un certo tipo di dispositivo.
 - TesterLimitAccessCondition: La quest è accessibile solo per un certo numero di tester.
 
 ### Step
-Il blocco di tipo [Step](#step) è una singola attività da svolgere con uno specifico output. Ogni step ha come compito quello di richiedere lo svolgimento di una determinata attività e contribuirà ad aumentare il valore di costo e tempo della quest a cui appartiene. 
+
+Il blocco di tipo [Step](#step) è una singola attività da svolgere con uno specifico output. Ogni step ha come compito quello di richiedere lo svolgimento di una determinata attività e contribuirà ad aumentare il valore di costo e tempo della quest a cui appartiene.
 Inizialmente sono previste tre tipologie di step:
+
 - BugForm Step
 - Survey Step
 - Media Step
 
-
 ## Costs
+
 Lista di blocchi di costo che determina come verranno determinati i costi del servizio. Inizialmente verranno predisposti due possibili blocchettini e poi estesi in base all'utilizzo.
 
 ### Quest Cost
+
 Questo blocchettino si occuperà di calcolare il costo del servizio in base al numero di quest e alla configurazione dei singoli step. Per cui un servizio dello stesso tipo ma con un numero superiore di step o condizioni di accesso particolari avrà un contributo di costo differente.
 
 ### Manual Costo
+
 Blocchettino libero con il quale sarà possibile indicare una specifico costo, (...) TBD
 
 ## Price
+
 TBD
 
 ## Taxonomies
+
 TBD
 
 ## Description
-TBD STRAPI DOC
 
+TBD STRAPI DOC
 
 ---
 

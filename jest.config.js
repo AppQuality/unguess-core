@@ -7,7 +7,13 @@ module.exports = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>/",
   }),
-  collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}", "!<rootDir>/node_modules/"],
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!<rootDir>/node_modules/",
+    "!<rootDir>/src/features/db/*",
+    "!<rootDir>/src/index.ts",
+    "!<rootDir>/src/config.ts",
+  ],
   testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)"],
   setupFiles: ["<rootDir>/src/__mocks__/mocks.ts"],
   setupFilesAfterEnv: ["<rootDir>/src/__mocks__/globalSetup.ts"],
