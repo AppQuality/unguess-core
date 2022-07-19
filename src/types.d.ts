@@ -20,4 +20,19 @@ declare global {
   interface StoplightOperations extends operations {}
   interface StoplightComponents extends components {}
   interface StoplightPaths extends paths {}
+
+  type ServiceConfiguration = {
+    quests: {
+      name: string;
+      accessConditions: {
+        type: components["schemas"]["AccessCondition"]["type"];
+        value: string;
+      }[];
+      steps: {
+        type: components["schemas"]["Step"]["type"];
+        description?: string;
+        fileTypes?: string[];
+      }[];
+    }[];
+  };
 }
