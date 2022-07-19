@@ -14,6 +14,7 @@ module.exports = {
     "!<rootDir>/src/features/sqlite/*",
     "!<rootDir>/src/index.ts",
     "!<rootDir>/src/config.ts",
+    "!<rootDir>/src/middleware/postResponseHandler.ts",
   ],
   testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)"],
   setupFiles: ["<rootDir>/src/__mocks__/mocks.ts"],
