@@ -28,8 +28,6 @@ aws ssm get-parameter --region eu-west-1 --name "/unguess-core/$ENVIRONMENT/.env
 
 source /var/docker/.env
 
-echo $TEST
-
 if test -f "$DOCKER_COMPOSE_FILE"; then
     set +e
     IS_RUNNING=$(docker ps -a | grep $DOCKER_IMAGE| wc -l)
@@ -49,6 +47,13 @@ services:
       - '80:80'
     environment:
       PORT: 80
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      CONNECTION_COUNT: ${CONNECTION_COUNT}
+      TOKENS: ${TOKENS}
 " > $DOCKER_COMPOSE_FILE
 
 
