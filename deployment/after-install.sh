@@ -14,7 +14,6 @@ DOCKER_COMPOSE_FILE="/home/ec2-user/$APPLICATION_NAME/docker-compose.yml"
 INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
 
 # pull docker image from ecr
-docker pull $DOCKER_IMAGE
 docker pull 163482350712.dkr.ecr.eu-west-1.amazonaws.com/$DOCKER_IMAGE
 
 # get env variables from parameter store
