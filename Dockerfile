@@ -1,15 +1,16 @@
-FROM alpine:3.15 as base
+FROM node:18.9.0-alpine3.15 as base
 
-RUN apk add nodejs npm
+RUN apk add python3 make g++
 COPY package*.json ./
+
 RUN npm install
 
 COPY . .
 
-RUN npm i -g npm-run-all
+RUN npm i -g npm-run-all 
 RUN npm run build
 
-FROM alpine:3.15 as web
+FROM alpine:3.14 as web
 
 COPY --from=base /dist /app/build
 COPY package*.json /app/
