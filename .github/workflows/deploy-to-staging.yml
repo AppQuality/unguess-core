@@ -32,7 +32,7 @@ jobs:
       - name: "Generate source zip"
         run: |
           cd deployment
-          echo -n "unguess.core:${{steps.extract_branch.outputs.tag}}" > docker-image.txt
+          echo -n "unguess-core:${{steps.extract_branch.outputs.tag}}" > docker-image.txt
           zip source.zip *
       - uses: zdurham/s3-upload-github-action@master
         env:
