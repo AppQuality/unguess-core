@@ -4,6 +4,11 @@
  */
 
 export interface paths {
+  "/": {
+    /** Get all routes available for this apis */
+    get: operations["get-root"];
+    parameters: {};
+  };
   "/quests": {
     /** Get all the quest available, regardless of the access conditions */
     get: operations["get-quests"];
@@ -80,6 +85,26 @@ export interface components {
       source: "tryber";
     };
   };
+  responses: {
+    /** An error due to the resource not existing */
+    NotFound: {
+      content: {
+        "application/json": {
+          element: string;
+          id: number;
+          message: string;
+        };
+      };
+    };
+    /** An error due to insufficient authorization to access the resource */
+    NotAuthorized: {
+      content: {
+        "application/json": {
+          message?: string;
+        };
+      };
+    };
+  };
   parameters: {
     /** @description The id of the step */
     stepId: string;
@@ -89,6 +114,18 @@ export interface components {
 }
 
 export interface operations {
+  /** Get all routes available for this apis */
+  "get-root": {
+    parameters: {};
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+    };
+  };
   /** Get all the quest available, regardless of the access conditions */
   "get-quests": {
     responses: {

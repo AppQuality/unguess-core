@@ -1,5 +1,5 @@
 import mysql, { Connection } from "mysql";
-import config from "@src/config";
+import config from "../../config";
 
 var _connection: Connection[] = [];
 var _connectionId: number = 0;

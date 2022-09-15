@@ -11,6 +11,7 @@
     "clean": "rimraf dist",
     "transpile": "tsc --noEmit false  && npx tscpaths -p tsconfig.json -s ./src -o ./dist",
     "copy-reference": "ncp src/reference/ dist/reference/",
+    "copy-reference-swag": "swagger-cli bundle -t yaml -o dist/reference/openapi.yaml  src/reference/openapi.yaml",
     "build": "npm-run-all clean transpile copy-reference",
     "start": "tsnd --respawn -r tsconfig-paths/register  --transpile-only  ./src/index.ts",
     "start:debug": "tsnd --respawn  --inspect=4321 -r tsconfig-paths/register  --transpile-only  ./src/index.ts",
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/AppQuality/unguess-core#readme",
   "devDependencies": {
+    "@apidevtools/swagger-cli": "^4.0.4",
     "@swc/core": "^1.2.212",
     "@swc/jest": "^0.2.21",
     "@types/body-parser": "^1.19.2",
