@@ -1,8 +1,8 @@
 FROM node:18.9.0-alpine3.15 as base
 
-RUN apk add python3 make g++
 COPY package*.json ./
 
+RUN npm r better-sqlite3
 RUN npm install
 
 COPY . .
