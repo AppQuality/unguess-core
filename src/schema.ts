@@ -77,6 +77,7 @@ export interface components {
         | external["Steps/Steps.yaml"]["components"]["schemas"]["Step"]
         | external["Steps/Steps.yaml"]["components"]["schemas"]["Step"][];
       access?: external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["AccessCondition"][];
+      name?: string;
     };
     /** Author */
     Author: {
@@ -130,7 +131,11 @@ export interface operations {
   "get-quests": {
     responses: {
       /** OK */
-      200: unknown;
+      200: {
+        content: {
+          "application/json": components["schemas"]["Quest"][];
+        };
+      };
     };
   };
   /** Get the services currently instantiated */
@@ -316,16 +321,13 @@ export interface external {
     components: {
       schemas: {
         /** AccessCondition */
-        AccessCondition: {
-          id?: string;
-        } & (
+        AccessCondition:
           | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TimedAccessCondition"]
           | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterListAccessCondition"]
           | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterLimitAccessCondition"]
           | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterDeviceOsVersionAccessCondition"]
           | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterDeviceTypeAccessCondition"]
-          | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterDeviceOsAccessCondition"]
-        );
+          | external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["TesterDeviceOsAccessCondition"];
         /** TimedAccessCondition */
         TimedAccessCondition: {
           endDate?: string;
