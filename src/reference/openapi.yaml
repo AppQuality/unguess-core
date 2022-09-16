@@ -7,11 +7,11 @@ info:
   contact:
     email: it@unguess.io
     name: Unguess
-    url: "https://unguess.io"
-  version: "1.0"
+    url: 'https://unguess.io'
+  version: '1.0'
   license:
     name: license
-    url: "https://unguess.io"
+    url: 'https://unguess.io'
 tags:
   - name: Quests
     description: The unit of work for the testers
@@ -20,14 +20,14 @@ tags:
   - name: Templates
     description: A simple configuration used as a starting point
 servers:
-  - url: "http://localhost:3000"
+  - url: 'http://localhost:3000'
 paths:
   /:
     get:
       summary: Get API description
       tags: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -46,7 +46,7 @@ paths:
       tags:
         - Quests
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -55,7 +55,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Quest'
       operationId: get-quests
-      description: "Get all the quest available, regardless of the access conditions"
+      description: 'Get all the quest available, regardless of the access conditions'
       security:
         - Key: []
   /services:
@@ -64,7 +64,7 @@ paths:
       tags:
         - Services
       responses:
-        "200":
+        '200':
           description: OK
       operationId: get-services
       description: Get the services currently instantiated
@@ -74,7 +74,7 @@ paths:
       summary: Instantiate a new service
       operationId: post-services
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -93,7 +93,7 @@ paths:
                           properties:
                             id:
                               type: string
-                        - $ref: "#/components/schemas/Quest"
+                        - $ref: '#/components/schemas/Quest'
       description: Create a new service from a template
       requestBody:
         content:
@@ -110,7 +110,7 @@ paths:
                 - templateId
       security:
         - Key: []
-  "/services/{id}/quests":
+  '/services/{id}/quests':
     parameters:
       - schema:
           type: string
@@ -124,7 +124,7 @@ paths:
         - Services
         - Quests
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -138,14 +138,14 @@ paths:
                           type: string
                       required:
                         - id
-                    - $ref: "#/components/schemas/Quest"
+                    - $ref: '#/components/schemas/Quest'
       operationId: get-services-id-quests
       description: Get the quest of an instance of service
     post:
       summary: Create a new quest in a service
       operationId: post-services-id-quests
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -155,27 +155,27 @@ paths:
                     properties:
                       id:
                         type: string
-                  - $ref: "#/components/schemas/Quest"
+                  - $ref: '#/components/schemas/Quest'
       description: Add a new quest to the instance of a service
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Quest"
-  "/quests/{questId}":
+              $ref: '#/components/schemas/Quest'
+  '/quests/{questId}':
     parameters:
-      - $ref: "#/components/parameters/questId"
+      - $ref: '#/components/parameters/questId'
     get:
       summary: Get Quests details
       operationId: get-quests-questId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: "#/components/schemas/Quest"
+                  - $ref: '#/components/schemas/Quest'
                   - type: object
                     properties:
                       service:
@@ -231,15 +231,15 @@ paths:
       tags:
         - Quests
       description: Retrieve the quest details
-  "/quests/{questId}/results":
+  '/quests/{questId}/results':
     parameters:
-      - $ref: "#/components/parameters/questId"
+      - $ref: '#/components/parameters/questId'
     get:
       summary: Get Quests results
       tags:
         - Quests
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -259,7 +259,7 @@ paths:
                                 - id
                             - $ref: ./Steps/Steps.yaml#/components/schemas/StepType
                         author:
-                          $ref: "#/components/schemas/Author"
+                          $ref: '#/components/schemas/Author'
                       required:
                         - step
                     - $ref: ./Results/Results.yaml#/components/schemas/Result
@@ -283,20 +283,20 @@ paths:
       security:
         - Key: []
       description: Get the list of results of every step of the quest
-  "/steps/{stepId}":
+  '/steps/{stepId}':
     parameters:
-      - $ref: "#/components/parameters/stepId"
+      - $ref: '#/components/parameters/stepId'
     post:
       summary: Push a new results to a quest
       operationId: post-steps-stepId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: object
-      description: "Allow an user to link something (a video, a bug, a survey result...) to a quest"
+      description: 'Allow an user to link something (a video, a bug, a survey result...) to a quest'
       security:
         - Key: []
       requestBody:
@@ -306,7 +306,7 @@ paths:
               type: object
               properties:
                 author:
-                  $ref: "#/components/schemas/Author"
+                  $ref: '#/components/schemas/Author'
                 result:
                   $ref: ./Results/Results.yaml#/components/schemas/Result
               required:
@@ -318,7 +318,7 @@ paths:
       summary: Get steps details and results
       operationId: get-steps-stepId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -361,7 +361,7 @@ paths:
       security:
         - Key: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -395,6 +395,8 @@ components:
           type: array
           items:
             $ref: ./AccessConditions/AccessConditions.yaml#/components/schemas/AccessCondition
+        name:
+          type: string
     Author:
       title: Author
       x-stoplight:
