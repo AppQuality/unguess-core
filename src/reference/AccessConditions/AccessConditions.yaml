@@ -27,10 +27,6 @@ components:
       x-stoplight:
         id: h3tbhx96brqgb
       allOf:
-        - type: object
-          properties:
-            id:
-              type: string
         - oneOf:
             - $ref: '#/components/schemas/TimedAccessCondition'
             - $ref: '#/components/schemas/TesterListAccessCondition'
