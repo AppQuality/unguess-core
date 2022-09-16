@@ -30,6 +30,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quest'
       operationId: get-quests
       description: 'Get all the quest available, regardless of the access conditions'
       security:
