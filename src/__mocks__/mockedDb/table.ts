@@ -55,6 +55,7 @@ class Table<T> {
   }
   async first(params?: (keyof T)[], where?: (T | T[])[]): Promise<T> {
     const items = await this.all(params, where, 1);
+    if (items.length === 0) throw new Error("No items found");
     return items[0];
   }
 }

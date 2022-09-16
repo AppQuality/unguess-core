@@ -3,18 +3,53 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
   private table: string;
   private primaryKey: string;
   private fields: (keyof T["fields"])[];
+  private example: T["fields"] | undefined;
   constructor({
     table,
     primaryKey,
-    fields,
+    example,
   }: {
     table: string;
     primaryKey: string;
-    fields?: (keyof T["fields"])[] | ["*"];
+    example?: T["fields"];
   }) {
     this.table = table;
     this.primaryKey = primaryKey;
-    this.fields = fields ? fields : ["*"];
+    this.example = example;
+    this.fields = example ? Object.keys(example) : ["*"];
+  }
+
+  public name() {
+    return this.table;
+  }
+
+  public defaultItem() {
+    if (!this.example) throw new Error("No example provided");
+    return this.example;
+  }
+
+  public columns() {
+    if (!this.example) throw new Error("No example provided");
+    const example = this.example;
+    const columns = Object.keys(example).map((f) => {
+      const type = typeof example[f];
+      const field = f.toString();
+      switch (type) {
+        case "string":
+          return { field, type: "VARCHAR(255)" };
+        case "number":
+          return { field, type: "INTEGER" };
+        default:
+          throw new Error(`Invalid type ${type}`);
+      }
+    });
+
+    return columns.map(
+      ({ field, type }) =>
+        `${field} ${type}${
+          field === this.primaryKey ? " PRIMARY KEY AUTOINCREMENT" : ""
+        }`
+    );
   }
 
   public async get(id: number): Promise<T["fields"]> {

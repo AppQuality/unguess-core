@@ -4,11 +4,11 @@ import Database from "./Database";
 class TestableDatabase extends Database<{
   fields: { id: number; name: string };
 }> {
-  constructor(fields?: TestableDatabase["fields"][number][] | ["*"]) {
+  constructor(example?: TestableDatabase["example"]) {
     super({
       table: "test",
       primaryKey: "id",
-      fields: fields ? fields : ["id", "name"],
+      example: example ? example : { id: 1, name: "test" },
     });
   }
 
