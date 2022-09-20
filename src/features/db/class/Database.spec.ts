@@ -12,7 +12,9 @@ class TestableDatabase extends Database<{
     });
   }
 
-  public testWhereQuery(args?: any) {
+  public testWhereQuery(
+    args?: Parameters<TestableDatabase["constructWhereQuery"]>[0]
+  ) {
     return this.constructWhereQuery(args);
   }
 }
@@ -36,5 +38,13 @@ describe("Database connector class", () => {
     const db = new TestableDatabase();
     const sql = db.testWhereQuery([[{ id: 1 }, { id: 2 }], [{ name: "test" }]]);
     expect(sql).toBe("WHERE (id = 1 OR id = 2) AND (name = 'test')");
+  });
+
+  it("Should allow creating a where with IN list", () => {
+    const db = new TestableDatabase();
+    expect(db.testWhereQuery([{ id: [1, 2] }])).toBe("WHERE (id IN (1,2))");
+    expect(db.testWhereQuery([{ name: ["test1", "test2"] }])).toBe(
+      "WHERE (name IN ('test1','test2'))"
+    );
   });
 });

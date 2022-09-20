@@ -1,5 +1,13 @@
 import * as db from "@src/features/db";
+
+type Arrayable<T> = { [K in keyof T]: T[K] | T[K][] };
 class Database<T extends Record<"fields", Record<string, number | string>>> {
+  private fieldItem: Partial<T["fields"]> = {};
+  private where: (
+    | (Arrayable<Partial<T["fields"]>> & { isLike?: boolean })
+    | (Arrayable<Partial<T["fields"]>> & { isLike?: boolean })[]
+  )[] = [];
+
   private table: string;
   private primaryKey: string;
   private fields: (keyof T["fields"])[];
@@ -54,7 +62,7 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
 
   public async get(id: number): Promise<T["fields"]> {
     const result = await this.query({
-      where: [{ [this.primaryKey]: id }],
+      where: [{ [this.primaryKey]: id }] as Database<T>["where"],
       limit: 1,
     });
     if (result.length === 0) {
@@ -65,7 +73,7 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
 
   public async exists(id: number): Promise<boolean> {
     const result = await this.query({
-      where: [{ [this.primaryKey]: id }],
+      where: [{ [this.primaryKey]: id }] as Database<T>["where"],
       limit: 1,
     });
     return result.length > 0;
@@ -76,10 +84,10 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
     limit,
     offset,
   }: {
-    where?: {}[];
+    where?: Database<T>["where"];
     limit?: number;
     offset?: number;
-  }) {
+  }): Promise<T["fields"][]> {
     const sql = this.constructSelectQuery({ where, limit, offset });
     return db.query(sql);
   }
@@ -88,21 +96,21 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
     data,
     where,
   }: {
-    data: Partial<T["fields"]>;
-    where: Partial<T["fields"]>[];
+    data: Database<T>["fieldItem"];
+    where: Database<T>["where"];
   }) {
     const sql = this.constructUpdateQuery({ data, where });
     await db.query(sql);
   }
 
   public async insert(
-    data: Partial<T["fields"]>
+    data: Database<T>["fieldItem"]
   ): Promise<{ insertId: number }> {
     const sql = this.constructInsertQuery({ data });
     return await db.query(sql);
   }
 
-  public async delete(where: Partial<T["fields"]>[]) {
+  public async delete(where: Database<T>["where"]) {
     const sql = this.constructDeleteQuery({ where });
     await db.query(sql);
   }
@@ -112,7 +120,7 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
     limit,
     offset,
   }: {
-    where?: {}[];
+    where?: Database<T>["where"];
     limit?: number;
     offset?: number;
   }) {
@@ -128,8 +136,8 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
     data,
     where,
   }: {
-    data: Partial<T["fields"]>;
-    where?: {}[];
+    data: Database<T>["fieldItem"];
+    where?: Database<T>["where"];
   }) {
     const dataKeys = Object.keys(data);
     const dataValues = Object.values(data);
@@ -142,7 +150,7 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
     return sql;
   }
 
-  private constructInsertQuery({ data }: { data: Partial<T["fields"]> }) {
+  private constructInsertQuery({ data }: { data: Database<T>["fieldItem"] }) {
     const dataKeys = Object.keys(data);
     const dataValues = Object.values(data);
     const sql = db.format(
@@ -154,15 +162,13 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
     return sql;
   }
 
-  private constructDeleteQuery({ where }: { where?: Partial<T["fields"]>[] }) {
+  private constructDeleteQuery({ where }: { where?: Database<T>["where"] }) {
     return `DELETE FROM ${this.table} ${
       where ? this.constructWhereQuery(where) : ""
     } `;
   }
 
-  protected constructWhereQuery(
-    where?: (Partial<T["fields"]> | Partial<T["fields"]>[])[]
-  ) {
+  protected constructWhereQuery(where?: Database<T>["where"]) {
     if (typeof where === "undefined") return "";
 
     const orQueries = where.map((item) => {
@@ -174,7 +180,17 @@ class Database<T extends Record<"fields", Record<string, number | string>>> {
       return `(${ors
         .map((subItem) => {
           const key = Object.keys(subItem)[0];
-          const value = Object.values(subItem)[0] as string | number;
+          const value = Object.values(subItem)[0] as
+            | string
+            | number
+            | string[]
+            | number[];
+          if (Array.isArray(value)) {
+            return db.format(
+              `${key} IN (${Array(value.length).fill("?").join(",")})`,
+              value
+            );
+          }
           return db.format(`${key} = ?`, [value]);
         })
         .join(" OR ")})`;

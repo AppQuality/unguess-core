@@ -1,30 +1,17 @@
 import Table from "./table";
 
-type AccessConditionParams = {
-  id?: number;
-  type?: string;
-  quest_id?: number;
-  value?: string
-};
-const defaultItem: AccessConditionParams = {
-  id: 1,
-  type: "type",
-  quest_id: 0,
-  value: ""
+import AccessConditionsTableTable from "@src/features/db/class/AccessConditions";
+const accessConditionsTable = new AccessConditionsTableTable();
 
-};
-class AccessConditions extends Table<AccessConditionParams> {
-  protected name = "access_conditions";
-  protected columns = [
-    "id INTEGER PRIMARY KEY AUTOINCREMENT",
-    "type VARCHAR(255)",
-    "quest_id INTEGER",
-    "value VARCHAR(255)"
-  ];
+type QuestParams = NonNullable<Partial<AccessConditionsTableTable["example"]>>;
+
+class AccessConditionsTable extends Table<QuestParams> {
+  protected name = accessConditionsTable.name();
+  protected columns = accessConditionsTable.columns();
   constructor() {
-    super(defaultItem);
+    super(accessConditionsTable.defaultItem() as QuestParams);
   }
 }
-const accessConditions = new AccessConditions();
-export default accessConditions;
-export type { AccessConditionParams };
+const accessConditionss = new AccessConditionsTable();
+export default accessConditionss;
+export type { QuestParams };
