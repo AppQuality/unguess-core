@@ -397,6 +397,9 @@ components:
             $ref: ./AccessConditions/AccessConditions.yaml#/components/schemas/AccessCondition
         name:
           type: string
+        startDate:
+          type: string
+          format: date
     Author:
       title: Author
       x-stoplight:
