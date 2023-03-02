@@ -28,6 +28,12 @@ describe("Quests", () => {
       id: 4,
       name: "Test Quest 4",
     });
+    accessConditions.insert({
+      id: 2,
+      type: "testerlist",
+      value: "1,2",
+      quest_id: 4,
+    });
   });
   it("should answer 403 if not authorized", async () => {
     return request(app).get("/quests").expect(403);
@@ -70,6 +76,11 @@ describe("Quests", () => {
       { type: "timed", endDate: "2020-01-01" },
     ]);
     expect(response.body[2]).not.toHaveProperty("access");
-    expect(response.body[3]).not.toHaveProperty("access");
+    expect(response.body[3]).toHaveProperty("access", [
+      {
+        type: "testerlist",
+        list: [1, 2],
+      },
+    ]);
   });
 });
