@@ -139,6 +139,10 @@ paths:
                       required:
                         - id
                     - $ref: '#/components/schemas/Quest'
+        '400':
+          $ref: '#/components/responses/NotFound'
+        '403':
+          description: Forbidden
       operationId: get-services-id-quests
       description: Get the quest of an instance of service
     post:
