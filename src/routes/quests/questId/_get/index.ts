@@ -1,30 +1,26 @@
-/**  OPENAPI-ROUTE : get-quests-questId */
-import { Context } from "openapi-backend";
+/**  OPENAPI-CLASS : get-quests-questId */
 import * as db from "@src/features/db";
 import { Response200, Response400, Params } from "./types";
+import QuestRoute from "@src/features/routes/QuestRoute";
 
-export default async (
-  c: Context,
-  req: OpenapiRequest,
-  res: OpenapiResponse
-): Promise<Response200 | Response400> => {
-  const { questId } = c.request.params as Params;
-  const quest = await getQuestById();
-  if (!quest) {
-    res.status_code = 400;
-    return {};
+export default class Quest extends QuestRoute<{
+  response: Response200 | Response400;
+  parameters: Params;
+}> {
+  protected async prepare() {
+    const quest = await this.getQuest();
+
+    if (!quest) return this.setError(404, {} as OpenapiError);
+
+    this.setSuccess(200, quest);
   }
 
-  res.status_code = 200;
-  return {};
-
-  async function getQuestById(): Promise<{ id: number } | false> {
+  private async getQuest() {
     const quest = await db.query(
-      db.format(`SELECT * FROM quests WHERE id = ?`, [questId])
+      `SELECT * FROM quests WHERE id = ${this.questId}`
     );
-    if (!quest.length) {
-      return false;
-    }
+
+    if (!quest.length) return false;
     return quest[0];
   }
-};
+}
