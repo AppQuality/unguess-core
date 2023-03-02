@@ -78,11 +78,12 @@ export interface components {
         | external["Steps/Steps.yaml"]["components"]["schemas"]["Step"][];
       access?: external["AccessConditions/AccessConditions.yaml"]["components"]["schemas"]["AccessCondition"][];
       name?: string;
+      /** Format: date */
+      startDate?: string;
     };
     /** Author */
     Author: {
       id: string;
-      /** @enum {string} */
       source: "tryber";
     };
   };
@@ -187,6 +188,9 @@ export interface operations {
           } & components["schemas"]["Quest"])[];
         };
       };
+      400: components["responses"]["NotFound"];
+      /** Forbidden */
+      403: unknown;
     };
   };
   /** Add a new quest to the instance of a service */
@@ -331,37 +335,31 @@ export interface external {
         /** TimedAccessCondition */
         TimedAccessCondition: {
           endDate?: string;
-          /** @enum {string} */
           type?: "timed";
         };
         /** TesterListAccessCondition */
         TesterListAccessCondition: {
           list?: number[];
-          /** @enum {string} */
           type?: "testerlist";
         };
         /** TesterLimitAccessCondition */
         TesterLimitAccessCondition: {
           limit?: number;
-          /** @enum {string} */
           type?: "testerlimit";
         };
         /** TesterDeviceOsAccessCondition */
         TesterDeviceOsAccessCondition: {
           operatingSystem?: string;
-          /** @enum {string} */
           type?: "testerDeviceOs";
         };
         /** TesterDeviceTypeAccessCondition */
         TesterDeviceTypeAccessCondition: {
           deviceType?: string;
-          /** @enum {string} */
           type?: "testerDeviceType";
         };
         /** TesterDeviceOsVersionAccessCondition */
         TesterDeviceOsVersionAccessCondition: {
           operatingSystemVersion?: string;
-          /** @enum {string} */
           type?: "testerDeviceOsVersion";
         };
       };
@@ -401,17 +399,14 @@ export interface external {
         } & external["Steps/Steps.yaml"]["components"]["schemas"]["StepType"];
         /** BugFormStep */
         BugFormStep: {
-          /** @enum {string} */
           type?: "bug";
         };
         /** SurveyStep */
         SurveyStep: {
-          /** @enum {string} */
           type?: "survey";
         };
         /** MediaStep */
         MediaStep: {
-          /** @enum {string} */
           type?: "media";
         };
         /** StepType */
